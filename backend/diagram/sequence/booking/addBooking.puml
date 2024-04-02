@@ -1,0 +1,24 @@
+@startuml Add Booking
+
+header Add Booking Sequence Diagram
+footer Page %page% of %lastpage%
+title "Add Booking"
+
+participant "Client" as client
+participant "<<JavaScript>>\n:Server" as server
+participant "<<Router>>\n:Booking" as routerBookings
+participant "<<Controllers>>\n:Bookings" as controllersBookings
+participant "<<Model>>\n:Booking" as modelBooking
+database "<<MongoDB>>\n:bookings" as BookingsDatabase
+
+client -> server ++:req.post('/booking')
+server -> routerBookings ++:app.use('/booking', booking)
+routerBookings -> controllersBookings ++:addBooking()
+alt The user hasn't created up to 3 bookings yet or user is admin
+    controllersBookings -> modelBooking ++:create(req.body)
+    modelBooking -> BookingsDatabase ++: BookingSchema
+    BookingsDatabase --> modelBooking: booking
+    controllersBookings <-- modelBooking --: booking
+    controllersBookings --> client --: response
+end
+@enduml

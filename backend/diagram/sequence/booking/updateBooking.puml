@@ -1,0 +1,24 @@
+@startuml Update Booking
+
+header Update Booking Sequence Diagram
+footer Page %page% of %lastpage%
+title "Update Booking"
+
+participant "Client" as client
+participant "<<JavaScript>>\n:Server" as server
+participant "<<Router>>\n:Booking" as routerBookings
+participant "<<Controllers>>\n:Bookings" as controllersBookings
+participant "<<Model>>\n:Booking" as modelBooking
+database "<<MongoDB>>\n:bookings" as BookingsDatabase
+
+client -> server ++:req.put('/booking/:id')
+server -> routerBookings ++:app.use('/booking', booking)
+routerBookings -> controllersBookings ++:updateBooking()
+alt user is the booking owner or user is admin
+    controllersBookings -> modelBooking ++:findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    modelBooking -> BookingsDatabase ++: BookingSchema
+    BookingsDatabase --> modelBooking: booking
+    controllersBookings <-- modelBooking --: booking
+    controllersBookings --> client --: response
+end
+@enduml

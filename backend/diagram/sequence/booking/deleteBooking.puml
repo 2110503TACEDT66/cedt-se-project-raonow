@@ -1,0 +1,29 @@
+@startuml Delete Booking
+
+header Delete Booking Sequence Diagram
+footer Page %page% of %lastpage%
+title "Delete Booking"
+
+participant "Client" as client
+participant "<<JavaScript>>\n:Server" as server
+participant "<<Router>>\n:Booking" as routerBookings
+participant "<<Controllers>>\n:Bookings" as controllersBookings
+participant "<<Model>>\n:Booking" as modelBooking
+database "<<MongoDB>>\n:bookings" as BookingsDatabase
+
+client -> server ++:req.delete('/booking/:id')
+server -> routerBookings ++:app.use('/booking')
+routerBookings -> controllersBookings ++:deleteBooking()
+alt user is the booking owner or user is admin
+    controllersBookings -> modelBooking ++:findById(req.params.id)
+    modelBooking -> BookingsDatabase ++: BookingSchema
+    BookingsDatabase --> modelBooking: booking
+    controllersBookings <-- modelBooking --: booking
+    controllersBookings --> modelBooking ++:deleteOne()
+    modelBooking --> BookingsDatabase ++: BookingSchema
+    BookingsDatabase --> modelBooking: {}
+    controllersBookings <-- modelBooking --: {}
+    controllersBookings -> client --: response
+end
+
+@enduml
