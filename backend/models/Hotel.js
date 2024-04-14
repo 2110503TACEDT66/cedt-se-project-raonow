@@ -9,6 +9,11 @@ const hotelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    province: {
+        type: String,
+        required: true,
+        default: "Bangkok"
+    },
     telephoneNumber: {
         type: String,
         required: true

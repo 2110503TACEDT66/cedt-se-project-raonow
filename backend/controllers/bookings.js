@@ -1,6 +1,8 @@
 const Booking = require('../models/Booking');
+const Member = require('../models/Member');
 const Hotel = require('../models/Hotel');
 const Payment = require('../models/Payment');
+const mongoose = require('mongoose');
 
 exports.getBookings= async (req,res,next)=>{
     let query;
@@ -70,12 +72,16 @@ exports.getBooking= async (req,res,next)=>{
 };
 
 exports.createBooking = async (req,res,next)=>{
-    try{
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {        
+        //add hotel Id to req.body
         req.body.hotel=req.params.hotelId;
 
+        //find hotel
         const hotel = await Hotel.findById(req.params.hotelId);
     
-        if(!hotel){     
+        if(!hotel) {     
             return res.status(404).json({success:false,message: `No hotel with the id of ${req.params.hotelId}`});
         }
 
@@ -90,8 +96,62 @@ exports.createBooking = async (req,res,next)=>{
             return res.status(400).json({success:false, message:`The user with ID ${req.user.id} has already made 3 bookings`});
         }
 
-        const booking = await Booking.create(req.body);
+        let discountAmount = 0;
+        let couponID = null;
 
+        if (req.body.coupon && req.body.coupon !== '') {
+            //get coupon data from body
+            const couponModel = require('../models/Coupon');
+            const couponData = await couponModel.findOne({code: req.body.coupon}).populate('campaign');
+            couponID = couponData._id;
+
+            //check if coupon is exist
+            if (!couponData) {
+                return res.status(404).json({
+                    success:false,
+                    message:`No coupon with the code of ${req.body.coupon}`}
+                );
+            }
+            //check if coupon is used
+            if (couponData.used) {
+                return res.status(400).json({
+                    success:false,
+                    message:`Coupon with the code of ${req.body.coupon} has been used}`
+                });
+            }
+            //check if coupon is used in designated area
+            if (couponData.campaign.limitedArea) {
+                if (!hotel.address.includes(couponData.data.campaign.limitedArea)) {
+                    return res.status(400).json({
+                        success:false,
+                        message:`Coupon with the code of ${req.body.coupon} is not valid for this hotel}`
+                    });
+                }
+            }
+            //check if coupon is expired
+            if (couponData.expiryDate < Date.now()) {
+                return res.status(400).json({
+                    success:false,
+                    message:`Coupon with the code of ${req.body.coupon} has expired}`
+                });
+            }
+
+            //apply change to coupon
+            couponData.used = true;
+            couponData.usedBy = req.user.id;
+            couponData.usedAt = hotel._id;
+            couponData.usedDate = Date.now();   
+            await couponData.save({session});       
+
+            //apply discount
+            if (couponData.campaign.discountType === 'percentage') {
+                discountAmount = couponData.campaign.discountAmount;
+            } else {
+                discountAmount = -1 * couponData.campaign.discountAmount;
+            }
+        }
+
+        //calculate hotel price with room type
         let hotel_price = hotel.basePrice;
 
         if (req.body.roomType === 'Suite') {
@@ -102,26 +162,75 @@ exports.createBooking = async (req,res,next)=>{
             hotel_price += 2000;
         }
 
+        //calculate duration
         hotel_price = hotel_price * req.body.duration;
 
-        const payment = await Payment.create({
-            booking:booking._id, 
-            amount:hotel_price,
+        //calculate discount
+        if (discountAmount < 0) {
+            discountAmount = hotel_price * discountAmount / 100;
+        }
+
+        //write payment data
+        let paymentData = {
+            amount: hotel_price,
+            coupon: couponID,
+            discountAmount: discountAmount,
             logs: [{
                 amount: hotel_price,
-                description: `User ${req.body.user} book hotel ${hotel._id} room type ${req.body.roomType} for ${req.body.duration} nights. Total price: ${hotel_price}`
+                description: `User ${req.body.user} book hotel ${hotel._id} room type ${req.body.roomType} for ${req.body.duration} nights. Total price: ${hotel_price}.`
             }]
-        });
+        };
 
+        //add coupon to description
+        if (req.body.coupon) {
+            paymentData.logs[0].description += ` Use coupon ${req.body.coupon} for discount ${discountAmount}`;
+        }
+
+        //check membership
+        const memberData = await Member.findOne({user: req.user.id});
+
+        //initialize point earned
+        req.body.pointEarned = null;
+
+        //add point to member
+        if (memberData) {
+            earnedPoint = (hotel_price - discountAmount) / 10;
+            memberData.point += earnedPoint;
+            req.body.pointEarned = earnedPoint;
+            memberData.logs.push({
+                action: 'earn',
+                point: (hotel_price - discountAmount) / 10,
+                description: `Earn ${Math.floor((hotel_price - discountAmount) / 10)} point for booking hotel ${hotel._id}.`
+            });
+            memberData.save({ session: session })
+        }
+
+        //create booking and payment
+        const [booking, payment] = await Promise.all([
+            Booking.create([req.body], {session}),
+            Payment.create([paymentData], { session: session })
+        ]);
+        await Payment.findByIdAndUpdate(payment._id, { booking: booking._id }, { session: session });
+        
+        await session.commitTransaction();
         res.status(200).json({
             success:true,
-            data: booking,
-            payment: payment
+            data: {
+                booking: booking,
+                payment: payment,
+                member: memberData ? memberData : null
+            },
         });
-    }   catch (error) {
-            console.log(error.stack);
-            return res.status(500).json({success:false,message:"Cannot create booking"});
 
+    } catch (err) {
+        session.abortTransaction();
+        console.log(err.stack);
+        return res.status(500).json({
+            success:false,
+            message:"Cannot create booking",
+        });
+    } finally {
+        session.endSession();
     }
 };
 
@@ -198,3 +307,66 @@ exports.deleteBooking=async (req,res,next)=>{
 		return res.status(500).json({success:false,message:"Cannot delete booking"});
 	}
 };
+
+exports.getDashboard = async (req, res, next) => {
+    let bookingQuery, pointQuery;
+    let date = new Date();
+    date.setDate(date.getDate() - (60 * 24 * 60 * 60 * 1000));
+
+    bookingQuery = Booking.aggregate([
+        {
+            '$lookup': {
+              'from': 'hotels', 
+              'localField': 'hotel', 
+              'foreignField': '_id', 
+              'as': 'hotelInfo'
+            }
+          }, {
+            '$unwind': '$hotelInfo'
+          }, {
+            '$group': {
+              '_id': '$hotelInfo.province', 
+              'count': {
+                '$sum': 1
+              }
+            }
+          }, {
+            '$project': {
+              '_id': 0, 
+              'province': '$_id', 
+              'count': 1
+            }
+          }
+    ]);
+
+    pointQuery = Member.aggregate([
+        {
+            '$group': {
+              '_id': null, 
+              'totalPoint': {
+                '$sum': '$point'
+              }, 
+              'averagePoint': {
+                '$avg': '$point'
+              }
+            }
+          }
+    ]);
+
+    try {
+        const bookingCount = await bookingQuery;
+        const point = await pointQuery;
+
+        res.status(200).json({
+            success: true,
+            data: {
+                booking: bookingCount,
+                point: point
+            }
+        });
+    } catch (err) {
+        res.status(400).json({
+            success: false
+        });
+    }
+}

@@ -70,11 +70,16 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 const hotel = require('./routes/hotel');
 const booking = require('./routes/booking');
 const auth = require('./routes/auth');
+const member = require('./routes/member');
+const campaign = require('./routes/campaign');
+const coupon = require('./routes/coupon');
 
 app.use('/api/v1/hotel', hotel);
 app.use('/api/v1/booking', booking);
 app.use('/api/v1/auth', auth);
-
+app.use('/api/v1/member', member);
+app.use('/api/v1/campaign', campaign);
+app.use('/api/v1/coupon', coupon);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));

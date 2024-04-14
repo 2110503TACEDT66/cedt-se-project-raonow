@@ -16,7 +16,15 @@ const paymentSchema = new mongoose.Schema({
     booking: {
         type: mongoose.Schema.ObjectId,
         ref: 'Booking',
-        required: true
+    },
+    coupon: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Coupon',
+        default: null
+    },
+    discountAmount: {
+        type: Number,
+        default: 0
     },
     logs: [{
         time: {
