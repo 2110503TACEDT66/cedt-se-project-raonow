@@ -7,7 +7,7 @@ import getUserProfile from "@/libs/getUserProfile";
 export default async function Home() {
 
   return (
-    <main className="">
+    <main>
       <Banner />
       <PromoteCard />
     
