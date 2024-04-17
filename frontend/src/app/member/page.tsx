@@ -14,7 +14,7 @@ export default async function MemberPage() {
     if(!session) return null;
     const user = await getUserProfile(session.user.token) as User;
     const member = user.member;
-    const members = session.user.role === 'admin' ? await getMembers(session.user.token) as Promise<MemberJSON> : await getMember(session.user.token, member.id) as Promise<MemberJSON>;
+    const members = session.user.role === 'admin' ? await getMembers(session.user.token) as Promise<MemberJSON> : await getMember(session.user.token, member) as Promise<MemberJSON>;
     
     return (
         <div>

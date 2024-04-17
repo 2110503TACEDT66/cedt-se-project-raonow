@@ -45,7 +45,7 @@ export interface User {
   telephoneNumber: string,
   role: string,
   createdAt: Date,
-  member: MemberItem
+  member: string
 }
 
 export interface UserBookingInfo {
