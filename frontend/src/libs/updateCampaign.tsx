@@ -1,9 +1,10 @@
 'use server'
 
-export default async function updateBooking(title:string, desc:string, token:string, id:string, point:number, amount:number) {
+export default async function updateCampaign(title:string, desc:string, token:string, cid:string, point:number, amount:number) {
 
     console.log("updating")
-    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/campaign/${id}`, {
+    try {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/campaign/${cid}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -18,8 +19,11 @@ export default async function updateBooking(title:string, desc:string, token:str
     });
 
     if (!response.ok) {
-        throw new Error("Failed to update campaign")
+        throw new Error("Failed to fetch campaign")
     }
 
     return await response.json();
+    } catch (error: any) {
+    throw new Error(`Failed to update campaign: ${error.message}`);
+    }
 }
