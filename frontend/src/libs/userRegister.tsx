@@ -11,7 +11,7 @@ type UserInput = {
 export default function userRegister(user: UserInput): Promise<UserInput> {
     return new Promise<UserInput>((resolve, reject) => {
         try {
-            fetch('https://presentation-day-1-laeo-tae-loei.vercel.app/api/v1/auth/register', {
+            fetch(`${process.env.BACKEND_URL}/api/v1/auth/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

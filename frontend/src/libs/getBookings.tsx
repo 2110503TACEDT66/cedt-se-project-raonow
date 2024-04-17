@@ -1,7 +1,7 @@
 export default async function getBookings(token: string) {
     try {
       const response = await fetch(
-        `https://presentation-day-1-laeo-tae-loei.vercel.app/api/v1/booking`,
+        `${process.env.BACKEND_URL}/api/v1/booking`,
         {
           method: "GET",
           headers: {

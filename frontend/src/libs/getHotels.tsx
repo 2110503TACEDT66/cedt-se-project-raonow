@@ -18,7 +18,7 @@ export default async function getHotels(query?: { [key: string]: string | string
     delete flatQuery.duration;
 
     const queryString = new URLSearchParams(flatQuery).toString();
-    const response = await fetch(`https://presentation-day-1-laeo-tae-loei.vercel.app/api/v1/hotel?${queryString}`)
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/hotel?${queryString}`)
 
     if(!response) throw new Error("Failed to fetch hotels")
     

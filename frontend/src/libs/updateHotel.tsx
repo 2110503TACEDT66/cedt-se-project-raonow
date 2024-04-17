@@ -1,5 +1,5 @@
 export default async function updateHotel(hid:string, token:string) {
-    const response = await fetch(`https://presentation-day-1-laeo-tae-loei.vercel.app/api/v1/hotel/${hid}`, {
+    const response = await fetch(`${process.env.BACKEND_URL}/api/v1/hotel/${hid}`, {
         method: "PUT",
         headers: {
             authorization: `Bearer ${token}`

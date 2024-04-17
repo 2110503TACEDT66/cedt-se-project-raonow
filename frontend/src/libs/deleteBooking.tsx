@@ -3,7 +3,7 @@ export default async function deleteBooking(token: string, id: string) {
     
     try {
       const response = await fetch(
-        `https://presentation-day-1-laeo-tae-loei.vercel.app/api/v1/booking/${id}`,
+        `${process.env.BACKEND_URL}/api/v1/booking/${id}`,
         {
           method: "DELETE",
           headers: {

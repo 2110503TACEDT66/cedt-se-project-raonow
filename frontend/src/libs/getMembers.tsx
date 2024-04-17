@@ -1,7 +1,7 @@
 export default async function getMembers(token: string | undefined) {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/v1/member`,
+        `${process.env.BACKEND_URL}/api/v1/member`,
         {
           method: "GET",
           headers: {

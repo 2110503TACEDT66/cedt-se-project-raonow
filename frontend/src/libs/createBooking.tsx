@@ -9,7 +9,7 @@ export default async function createBooking(
   ) {
     try {
       const response = await fetch(
-        `https://presentation-day-1-laeo-tae-loei.vercel.app/api/v1/hotel/${hotelId}/booking`,
+        `${process.env.BACKEND_URL}/api/v1/hotel/${hotelId}/booking`,
         {
           method: "POST",
           headers: {
