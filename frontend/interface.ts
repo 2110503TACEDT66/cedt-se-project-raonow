@@ -76,3 +76,24 @@ export interface MemberJSON {
   count: number,
   data: MemberItem[]
 }
+
+export interface campaignJSON {
+  success: boolean,
+  count: number,
+  data: campaignItem[]
+}
+
+export interface campaignItem {
+  _id?: string,
+  title: string,
+  desc: string,
+  point: number,
+  onePerUser: boolean,
+  discountType: string,
+  discountAmount: number,
+  limitedArea: string,
+  totalAmount: number,
+  amoutLeft: number,
+  createAt: Date,
+  __v?: number
+}
