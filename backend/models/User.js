@@ -32,6 +32,11 @@ const UserSchema = new mongoose.Schema({
       enum: ['user', 'admin'],
       default: 'user'
   },
+  member: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Member',
+    default: null,
+  },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     createdAt: {

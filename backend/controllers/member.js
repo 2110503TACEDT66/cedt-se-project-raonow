@@ -1,4 +1,5 @@
 const Member = require('../models/Member');
+const User = require('../models/User');
 
 exports.getMembers = async (req, res, next) => {
     try {
@@ -112,6 +113,7 @@ exports.createMember = async (req, res, next) => {
         }
 
         const member = await Member.create(req.body);
+        await User.findByIdAndUpdate(req.user.id, { member: member._id });
 
         res.status(201).json({
             success: true,
@@ -155,6 +157,7 @@ exports.updateMember = async (req, res, next) => {
 exports.deleteMember = async (req, res, next) => {
     try {
         const member = await Member.findByIdAndDelete(req.params);
+        await User.findByIdAndUpdate(req.user.id, { member: null });
 
         if (!member) {
             return res.status(400).json({
