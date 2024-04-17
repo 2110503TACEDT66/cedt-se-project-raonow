@@ -59,3 +59,19 @@ interface Book {
   date: string,
   duration: number
 }
+
+export interface MemberItem {
+  id: string,
+  user: string,
+  address: string,
+  province: string,
+  birthday: Date,
+  point: number,
+  bookingCount: number
+}
+
+export interface MemberJSON {
+  success: boolean,
+  count: number,
+  data: MemberItem[]
+}

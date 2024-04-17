@@ -16,6 +16,7 @@ export default async function TopMenu () {
             <div className="flex flex-row">
                 {
                     session? <>
+                        <TopMenuItem title="Member" pageRef="/member/create"/>
                         <TopMenuItem title="Account" pageRef="/account"/>
                         <TopMenuItem title="Sign-Out" pageRef="/api/auth/signout"/>
                     </> :
