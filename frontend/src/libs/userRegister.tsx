@@ -9,7 +9,7 @@ type UserInput = {
     createdAt : Date;
 }
 
-export default function userRegister(user: UserInput): Promise<UserInput> {
+export default async function userRegister(user: UserInput): Promise<UserInput> {
     return new Promise<UserInput>((resolve, reject) => {
         try {
             fetch(`${process.env.BACKEND_URL}/api/v1/auth/register`, {
