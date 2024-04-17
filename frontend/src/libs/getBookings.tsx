@@ -1,3 +1,4 @@
+'use server'
 export default async function getBookings(token: string) {
     try {
       const response = await fetch(

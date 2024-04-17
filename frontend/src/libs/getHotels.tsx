@@ -1,3 +1,5 @@
+'use server'
+
 export default async function getHotels(query?: { [key: string]: string | string[] | undefined }) {
 
     // make query work

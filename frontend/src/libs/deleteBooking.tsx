@@ -1,3 +1,4 @@
+'use server'
 export default async function deleteBooking(token: string, id: string) {
     console.log("calling delete")
     
