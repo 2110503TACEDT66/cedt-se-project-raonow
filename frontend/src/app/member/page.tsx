@@ -13,18 +13,18 @@ export default async function MemberPage() {
     const session = await getServerSession(authOptions);
     if(!session) return null;
     const user = await getUserProfile(session.user.token) as User;
-    const member = user.member;
-    const members = session.user.role === 'admin' ? await getMembers(session.user.token) as Promise<MemberJSON> : await getMember(session.user.token, member) as Promise<MemberJSON>;
+    const member = user.data.member;
+    const members = user.data.role === 'admin' ? await getMembers(session.user.token) as Promise<MemberJSON> : await getMember(session.user.token, member) as Promise<MemberJSON>;
     
     return (
-        <div>
+        <div className="container mx-auto px-4 py-4 w-2/3 space-y-4 min-h-screen">
             <div className="text-2xl font-bold text-black ml-5 p-5">Membership</div>
             <div style={{margin: "20px", display: "flex", flexDirection:"column",
             flexWrap:"wrap", justifyContent:"center", alignContent:"space-around"}}>
                 {
-                    (await members).data.map((members:MemberItem)=> {
+                    (await members).data.map((member:MemberItem)=> {
                         return (
-                            <MemberCard member={members}/>
+                            <MemberCard member={member}/>
                         )
                     })
                 }
