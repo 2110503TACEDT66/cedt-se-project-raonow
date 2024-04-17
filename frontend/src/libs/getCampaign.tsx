@@ -1,14 +1,12 @@
 'use server'
-export default async function deleteCampaign(token: string, cid: string) {
-    console.log("calling delete")
-    
+export default async function getCampaign(token: string, cid: string) {
     try {
       const response = await fetch(
         `${process.env.BACKEND_URL}/api/v1/campaign/${cid}`,
         {
-          method: "DELETE",
+          method: "GET",
           headers: {
-            authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -19,6 +17,6 @@ export default async function deleteCampaign(token: string, cid: string) {
   
       return await response.json();
     } catch (error: any) {
-       console.log(`Failed to delete campaign: ${error.message}`);
+      console.log(`Failed to get campaign: ${error.message}`);
     }
   }
