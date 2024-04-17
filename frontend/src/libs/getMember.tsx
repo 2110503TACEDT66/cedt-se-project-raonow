@@ -1,8 +1,8 @@
 // 'use server'
-export default async function getMembers(token: string | undefined) {
+export default async function getMember(token: string | undefined, mid: string | undefined) {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_URL}/api/v1/member`,
+        `${process.env.BACKEND_URL}/api/v1/member/${mid}`,
         {
           method: "GET",
           headers: {
