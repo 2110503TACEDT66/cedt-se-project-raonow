@@ -38,14 +38,23 @@ export interface BookingJSON {
 }
 
 export interface User {
-  id: string,
+  success: boolean,
+  data: {
+    id: string,
+    name: string,
+    email: string,
+    telephoneNumber: string,
+    role: string,
+    member: string  
+  }
+}
+
+export interface UserForMember {
+  _id: string,
   name: string,
-  email: string,
-  password: string,
   telephoneNumber: string,
-  role: string,
-  createdAt: Date,
-  member: string
+  email: string,
+  role: string
 }
 
 export interface UserBookingInfo {

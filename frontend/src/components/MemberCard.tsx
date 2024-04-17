@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import { getServerSession } from "next-auth";
-import { MemberItem, MemberJSON, User } from "../../interface";
+import { MemberItem, MemberJSON, User, UserForMember } from "../../interface";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function MemberCard({member} : {member:MemberItem}) {
 
-    const user: User = typeof member.user === 'string' ? JSON.parse(member.user) : member.user;
+    const user: UserForMember = typeof member.user === 'string' ? JSON.parse(member.user) : member.user;
 
     return (
         <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100">
