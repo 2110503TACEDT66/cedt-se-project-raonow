@@ -95,14 +95,14 @@ export interface campaignJSON {
 export interface campaignItem {
   _id?: string,
   title: string,
-  desc: string,
+  description: string,
   point: number,
   onePerUser: boolean,
   discountType: string,
   discountAmount: number,
   limitedArea: string,
   totalAmount: number,
-  amoutLeft: number,
+  amountLeft: number,
   createAt: Date,
   __v?: number
 }
