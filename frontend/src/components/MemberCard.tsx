@@ -8,7 +8,7 @@ export default async function MemberCard({member} : {member:MemberItem}) {
     const user: UserForMember = typeof member.user === 'string' ? JSON.parse(member.user) : member.user;
 
     return (
-        <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100">
+        <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100 border">
             <div className="w-[20%] items-center">
                 <Image src={'/img/logo.jpg'} alt='logo image' width={100} height={100} className='object-cover rounded-l-lg'/>
             </div>
