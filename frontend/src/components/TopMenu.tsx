@@ -12,11 +12,19 @@ export default async function TopMenu () {
                 <div className="text-md font-medium"><TopMenuItem title="Hotel Booking" pageRef="/"/></div>
                 <TopMenuItem title="Hotels" pageRef="/hotels"/>
                 <TopMenuItem title="Booking" pageRef="/mybooking"/>
+                {
+                    session?.user?.user?.role === 'admin' ?
+                    <TopMenuItem title="Dashboard" pageRef="/dashboard"/> : null
+                }
             </div>
             <div className="flex flex-row">
                 {
                     session? <>
-                        <TopMenuItem title="Member" pageRef="/member/create"/>
+                        {
+                            session?.user?.user?.member ?
+                            <TopMenuItem title="Member" pageRef="/member"/> :
+                            <TopMenuItem title="Member" pageRef="/member/create"/>
+                        }
                         <TopMenuItem title="Account" pageRef="/account"/>
                         <TopMenuItem title="Sign-Out" pageRef="/api/auth/signout"/>
                     </> :

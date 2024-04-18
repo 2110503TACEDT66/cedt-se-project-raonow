@@ -45,7 +45,7 @@ export interface User {
     email: string,
     telephoneNumber: string,
     role: string,
-    member: string  
+    member: string | null  
   }
 }
 

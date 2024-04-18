@@ -1,4 +1,4 @@
-// 'use server'
+'use server'
 export default async function getMembers(token: string | undefined) {
     try {
       const response = await fetch(

@@ -77,11 +77,13 @@ exports.createBooking = async (req,res,next)=>{
     try {        
         //add hotel Id to req.body
         req.body.hotel=req.params.hotelId;
+        req.body.duration = parseInt(req.body.duration);
 
         //find hotel
         const hotel = await Hotel.findById(req.params.hotelId);
     
         if(!hotel) {     
+            await session.abortTransaction(); await session.endSession();
             return res.status(404).json({success:false,message: `No hotel with the id of ${req.params.hotelId}`});
         }
 
@@ -93,6 +95,7 @@ exports.createBooking = async (req,res,next)=>{
 
         //If the user is not an admin, they can only create 3 booking.
         if(existedBookings.length >= 3 && req.user.role !== 'admin'){
+            await session.abortTransaction(); await session.endSession();
             return res.status(400).json({success:false, message:`The user with ID ${req.user.id} has already made 3 bookings`});
         }
 
@@ -107,6 +110,7 @@ exports.createBooking = async (req,res,next)=>{
 
             //check if coupon is exist
             if (!couponData) {
+                await session.abortTransaction(); await session.endSession();
                 return res.status(404).json({
                     success:false,
                     message:`No coupon with the code of ${req.body.coupon}`}
@@ -114,6 +118,7 @@ exports.createBooking = async (req,res,next)=>{
             }
             //check if coupon is used
             if (couponData.used) {
+                await session.abortTransaction(); await session.endSession();
                 return res.status(400).json({
                     success:false,
                     message:`Coupon with the code of ${req.body.coupon} has been used}`
@@ -122,6 +127,7 @@ exports.createBooking = async (req,res,next)=>{
             //check if coupon is used in designated area
             if (couponData.campaign.limitedArea) {
                 if (!hotel.address.includes(couponData.data.campaign.limitedArea)) {
+                    await session.abortTransaction(); await session.endSession();
                     return res.status(400).json({
                         success:false,
                         message:`Coupon with the code of ${req.body.coupon} is not valid for this hotel}`
@@ -130,6 +136,7 @@ exports.createBooking = async (req,res,next)=>{
             }
             //check if coupon is expired
             if (couponData.expiryDate < Date.now()) {
+                await session.abortTransaction(); await session.endSession();
                 return res.status(400).json({
                     success:false,
                     message:`Coupon with the code of ${req.body.coupon} has expired}`
@@ -213,6 +220,8 @@ exports.createBooking = async (req,res,next)=>{
         await Payment.findByIdAndUpdate(payment._id, { booking: booking._id }, { session: session });
         
         await session.commitTransaction();
+        await session.endSession();
+
         res.status(200).json({
             success:true,
             data: {
@@ -223,14 +232,15 @@ exports.createBooking = async (req,res,next)=>{
         });
 
     } catch (err) {
-        session.abortTransaction();
-        console.log(err.stack);
+        console.log('error');
+        await session.abortTransaction(); await session.endSession();
+        console.log(err);
         return res.status(500).json({
             success:false,
             message:"Cannot create booking",
         });
     } finally {
-        session.endSession();
+        console.log('finally');
     }
 };
 

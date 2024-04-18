@@ -1,4 +1,4 @@
-// 'use server'
+'use server'
 export default async function createMember(
     token: string,
     user: string,
@@ -30,8 +30,7 @@ export default async function createMember(
       if (!response.ok) {
         throw new Error("Failed to fetch member");
       }
-  
-      return await response.json();
+
     } catch (error: any) {
       throw new Error(`Failed to fetch member: ${error.message}`);
     }
