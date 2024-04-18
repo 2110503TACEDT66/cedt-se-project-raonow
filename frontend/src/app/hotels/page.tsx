@@ -11,14 +11,16 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
   };  
 
-export default async function HotelsPage(props: Props) {
+export default function HotelsPage(props: Props) {
     const searchParams = props.searchParams;
-    const hotels:HotelJSON = await getHotels(searchParams)
+    const hotels = getHotels(searchParams)
     
     return(
-        <main className="w-screen">
+        <main className="w-screen min-h-screen">
             <AddBookDate searchParams={searchParams}/>
-            <HotelCatalog hotelJson={hotels} date={searchParams.date as string} duration={Number(searchParams.duration)} />
+            <Suspense fallback={<LinearProgress />}>
+                <HotelCatalog hotelJson={hotels} date={searchParams.date as string} duration={Number(searchParams.duration)} />
+            </Suspense>
         </main>
     )
 }
