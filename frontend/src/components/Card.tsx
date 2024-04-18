@@ -80,8 +80,20 @@ export default function Card({hotelName, book, user, cardType}:
                 {
                     cardType === 'showBooking' && (
                         <div className="">
-                            <div className="text-gray-500">Booking ID: {book?._id}</div>
-                            <div className="text-gray-400">Click to view or edit booking information</div>
+                            <div className=" flex flex-row justify-between items-center">
+                                <div>
+                                    <div className='text-gray-500'>Booking ID: {book?._id}</div>
+                                    <div className="text-gray-400">Click to view or edit booking information</div>
+                                </div>
+                                
+                                {
+                                    book?.pointEarned != null ?
+                                        <div className='items-center text-green-500'>
+                                            {book?.pointEarned} point earned
+                                        </div>: null
+                                }
+                            </div>
+                            
                         </div>
                     )
                 }

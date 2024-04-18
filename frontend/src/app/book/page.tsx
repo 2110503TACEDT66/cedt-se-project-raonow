@@ -6,6 +6,7 @@ import getHotel from "@/libs/getHotel";
 import { BookingItem } from "../../../interface";
 import CreateBookingForm from "@/components/CreateBookingForm"; 
 import BookingHotelCard from "@/components/BookingHotelCard";
+import InviteToMakeMemberCard from "@/components/InvitetoMakememberCard";
 import { HotelItem } from "../../../interface";
 
 export default async function Book({searchParams}:{searchParams:{hotel:string, type:string, date:string, duration:number}}) {
@@ -47,6 +48,7 @@ export default async function Book({searchParams}:{searchParams:{hotel:string, t
       </header> */}
       <main className="container mx-auto px-4 py-4 w-2/3 space-y-4">
             <h2 className="text-xl font-medium mb-2">Welcome, {user.data.name}!</h2>
+            <InviteToMakeMemberCard />
             <BookingHotelCard hotel={hotel.data} book={book} cardType="createBooking"/>
 
             <div className="border rounded-md flex flex-row justify-between py-4 px-6 shadow-lg bg-white">
