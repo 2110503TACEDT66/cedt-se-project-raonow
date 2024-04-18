@@ -86,13 +86,13 @@ export interface MemberJSON {
   data: MemberItem[]
 }
 
-export interface campaignJSON {
+export interface CampaignJSON {
   success: boolean,
   count: number,
-  data: campaignItem[]
+  data: CampaignItem[]
 }
 
-export interface campaignItem {
+export interface CampaignItem {
   _id?: string,
   title: string,
   description: string,
