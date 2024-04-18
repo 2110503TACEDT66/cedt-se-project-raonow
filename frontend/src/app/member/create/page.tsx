@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "../../api/auth/[...nextauth]/[...nextauth]";
 import CreateMemberForm from "@/components/CreateMemberForm";
 
 export default async function CreateMember() {

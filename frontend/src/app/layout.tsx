@@ -4,7 +4,7 @@ import "./globals.css";
 import TopMenu from "@/components/TopMenu";
 import Footer from "@/components/Footer";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "./api/auth/[...nextauth]/[...nextauth]";
 import NextAuthProvider from "@/providers/NextAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });

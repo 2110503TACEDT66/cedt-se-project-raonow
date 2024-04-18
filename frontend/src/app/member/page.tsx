@@ -1,7 +1,7 @@
 import MemberCard from "@/components/MemberCard";
 import getMembers from "@/libs/getMembers";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../api/auth/[...nextauth]/[...nextauth]";
 import Link from "next/link";
 import { MemberItem, MemberJSON, User } from "../../../interface";
 import Image from 'next/image'

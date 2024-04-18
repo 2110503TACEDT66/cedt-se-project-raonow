@@ -106,3 +106,8 @@ export interface campaignItem {
   createAt: Date,
   __v?: number
 }
+
+export interface dashboardItem {
+  province: string,
+  count: number
+}

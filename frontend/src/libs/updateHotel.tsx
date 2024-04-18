@@ -8,7 +8,7 @@ export default async function updateHotel(hid:string, token:string) {
     });
 
     if (!response.ok) {
-        throw new Error('Failed to delete hotel');
+        throw new Error("Failed to delete hotel");
     }
 
     return await response.json();
