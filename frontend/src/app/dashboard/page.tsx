@@ -1,5 +1,4 @@
 import getUserProfile from "@/libs/getUserProfile";
-import getBookings from "@/libs/getBookings";
 import { getServerSession } from 'next-auth';
 import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
 import MemberCard from "@/components/MemberCard";
@@ -9,7 +8,6 @@ import getCampaign from "@/libs/getCampaigns";
 import { dashboardItem, CampaignItem } from "../../../interface";
 import Image from "next/image";
 import Link from "next/link";
-import UpdateCampaignForm from "../campaign/update/page";
 // import DashboardCard from "@/components/DashboardCard";
 
 export default async function Dashboard() {
@@ -80,10 +78,12 @@ export default async function Dashboard() {
                                     Use: {campaign.totalAmount - campaign.amountLeft}/{campaign.totalAmount}
                                 </div>
                                 <div className="flex space-x-4">
+                                    <Link href={`/campaign/${campaign._id}/update`}>
                                         <button className="bg-orange-500 text-white rounded-2xl px-[42px] py-[6px] mr-2"
                                         >
                                             Edit
                                         </button>
+                                    </Link>
                                         <button className="bg-red-500 text-white rounded-2xl px-[34px] py-[6px]">   
                                             Delete
                                         </button>
