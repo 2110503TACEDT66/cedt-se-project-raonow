@@ -1,4 +1,4 @@
-// 'use server'
+'use server'
 export default async function createMember(
     token: string,
     user: string,

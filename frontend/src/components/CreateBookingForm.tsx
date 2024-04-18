@@ -18,7 +18,7 @@ export default function CreateBookingForm({book, session}:{book:BookingItem, ses
     const [isLoading, setIsLoading] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
     const [bookDate, setBookDate] = useState<Dayjs | null>(book.bookDate ? dayjs(book.bookDate) : null);
-    const [duration, setDuration] = useState<number | null>(book.duration || 1);
+    const [duration, setDuration] = useState<number>(book.duration || 1);
     // console.log(session?.user.token)
     const menuClass = "px-3 py-1 space-x-2";
 

@@ -1,6 +1,8 @@
 'use server'
 
-export default async function getHotels(query?: { [key: string]: string | string[] | undefined }) {
+import { HotelJSON } from "../../interface";
+
+export default async function getHotels(query?: { [key: string]: string | string[] | undefined }): Promise<HotelJSON> {
 
     // make query work
     const flatQuery: Record<string, string> = {};
