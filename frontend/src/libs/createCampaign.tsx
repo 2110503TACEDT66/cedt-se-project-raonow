@@ -7,7 +7,7 @@ export default async function createCampaign(
     onePerUser: boolean,
     discountType: string,
     discountAmount: number,
-    limitedArea: string,
+    limitedArea: null,
     totalAmount: number,
     duration: number
   ) {
