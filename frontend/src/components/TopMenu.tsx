@@ -7,7 +7,7 @@ export default async function TopMenu () {
     const session = await getServerSession(authOptions);
     return (
         <div className="h-16 bg-white top-0 left-0 right-0 border-t 
-        border-solid border-lightgray flex flex-row justify-between text-black">
+        border-solid border-lightgray flex flex-row justify-between text-black shadow-md">
             <div className="flex items-center justify-center">
                 <div className="text-md font-medium"><TopMenuItem title="Hotel Booking" pageRef="/"/></div>
                 <TopMenuItem title="Hotels" pageRef="/hotels"/>
