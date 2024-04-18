@@ -101,3 +101,12 @@ exports.logout=async(req,res,next)=>{
         data:{}
     });
 };
+
+exports.getAllUser = async(req,res,next)=>{
+    try {
+        const users = await User.find();
+        res.status(200).json({success:true, data: users});
+    } catch(err) {
+        res.status(400).json({success: false});
+    }
+}

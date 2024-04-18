@@ -1,8 +1,4 @@
 'use server'
-
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
-
 export default async function createMember(
     token: string,
     user: string,
