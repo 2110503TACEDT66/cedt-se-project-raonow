@@ -8,6 +8,7 @@ import getDashboard from "@/libs/getDashboard";
 import getCampaign from "@/libs/getCampaigns";
 import { dashboardItem, campaignItem } from "../../../interface";
 import Image from "next/image";
+import Link from "next/link";
 // import DashboardCard from "@/components/DashboardCard";
 
 export default async function Dashboard() {
@@ -17,8 +18,12 @@ export default async function Dashboard() {
     const userProfile = await getUserProfile(session.user.token);
     if (userProfile.data.role === 'user') {
         return (
-            <main className="container mx-auto px-4 py-4 w-2/3 space-y-4 min-h-screen">
-                <h1 className="text-2xl font-bold my-4">This page is for admin!!</h1>
+            <main className="flex items-center justify-center h-[77vh]">
+                <div className="w-2/3 p-4">
+                    <h1 className="text-3xl font-bold my-[20px] text-center">401 Unauthorized</h1>
+                    <h2 className="text-lg my-2 text-center">You are not authorized to access this page.</h2>
+                    <div className="text-mediun my-2 text-center underline text-blue-500"><Link href="/..">Return to homepage</Link></div>
+                </div>
             </main>
         );
     }
@@ -53,31 +58,31 @@ export default async function Dashboard() {
             <div>
                 {
                     campaigns.data.map((campaign: campaignItem) => (
-                        <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100">
+                        <div className="relative w-full mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100">
                             <div className="">
                                 <Image src={'/img/logo.jpg'} alt='logo image' width={100} height={100} className='object-cover rounded-l-lg'/>
                             </div>
-                            <div className="flex flex-col">
-                                <div className="flex flex-row items-center justify-between">
-                                    <div className="flex flex-col justify-between ml-4">
+                            <div className="flex flex-col flex-grow ml-4">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div className="flex flex-col">
                                         <div className="font-bold">{campaign.title}</div>
                                         <div>{campaign.description}</div>
                                     </div>
-                                    <div className="">
-                                        <button className="bg-green-500 text-white rounded-full px-4 py-2">
-                                            Point: {campaign.point}
+                                    <div className="ml-4">
+                                        <button className="bg-green-500 text-white rounded-2xl px-[23px] py-[6px]">
+                                            {campaign.point} Point
                                         </button>
                                     </div>
                                 </div>
-                                <div className="flex flex-row pt-4">
-                                <div className="font-sm font-bold justify-between ml-4">
+                                <div className="flex items-center justify-between">
+                                <div className="font-sm font-bold">
                                     Use: {campaign.totalAmount - campaign.amountLeft}/{campaign.totalAmount}
                                 </div>
-                                <div className="ml-40">
-                                        <button className="bg-orange-500 text-white rounded-full px-4 py-2 mr-2">
+                                <div className="flex space-x-4">
+                                        <button className="bg-orange-500 text-white rounded-2xl px-[42px] py-[6px] mr-2">
                                             Edit
                                         </button>
-                                        <button className="bg-red-500 text-white rounded-full px-4 py-2">
+                                        <button className="bg-red-500 text-white rounded-2xl px-[34px] py-[6px]">   
                                             Delete
                                         </button>
                                 </div>
