@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { getServerSession } from "next-auth";
 import { MemberItem, MemberJSON, User, UserForMember } from "../../interface";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
 
 export default async function MemberCard({member} : {member:MemberItem}) {
 

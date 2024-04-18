@@ -2,7 +2,7 @@
 import UpdateBookingForm from '@/components/UpdateBookingForm';
 import getHotel from '@/libs/getHotel'
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
 import { BookingItem } from "../../../../../interface";
 import getBooking from '@/libs/getBooking';
 
