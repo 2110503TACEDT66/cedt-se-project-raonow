@@ -6,7 +6,13 @@
 // import MemberCard from "@/components/MemberCard";
 // import getMember from "@/libs/getMember";
 // //import RedeemCampaignCard from "@/components/RedeemCampaignCard";
-
+export default function Dashboard() {
+    return (
+        <div>
+            waiting for fix
+        </div>
+    )
+}
 // export default async function Dashboard() {
 //     const session = await getServerSession(authOptions);
 //     if (!session) return null;
