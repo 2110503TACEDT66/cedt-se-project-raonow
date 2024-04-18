@@ -70,10 +70,10 @@ export default function CreateCampaignForm({session}:{session:any}) {
     );
 
     return (
-        <main className='bg-gray-100 w-full h-[82vh] flex items-center justify-center flex flex-col'>
+        <main className='bg-gray-100 w-screen h-full flex items-center justify-center flex-col'>
                 <div className='text-2xl font-bold mt-[20px] flex'>Create Campaign</div>
                 <form className='w-[80vw] mx-auto my-4 p-10 bg-white rounded-lg shadow-lg h-[100%] items-center'>
-                    <div>
+                    <div className='justify-between'>
                         <div className="text-left">
                             <div>
                                 <div className="font-semibold">Title</div>
@@ -90,29 +90,29 @@ export default function CreateCampaignForm({session}:{session:any}) {
                                 <div> <TextField id='point' name='point' type="number" className='border px-5 py-2 rounded-md' size="small"
                                 value={point < 0 ? 0 : point} onChange={handlePointChange}> </TextField></div>
                                 </div>
-                            <div>
-                                <div className="font-semibold">Limited Area</div><div><CheckBox/></div>
-                                <div>
-                                    <Select className='border rounded-md'>
-                                        <MenuItem id='Bangkok'>Chiang Mai</MenuItem>
-                                        <MenuItem id='Chiang Mai'>Bangkok</MenuItem>
-                                        <MenuItem id='Chonburi'>Chonburi</MenuItem>
-                                        <MenuItem id='Phuket'>Phuket</MenuItem>
-                                    </Select>
-                                </div>
+                            <div className='flex space-x-4 w-full items-center'>
+                                <div className="font-semibold">Limited Area</div>
+                                <div><CheckBox/></div>
+                                <Select className='border rounded-md w-1/3'>
+                                    <MenuItem id='Bangkok'>Chiang Mai</MenuItem>
+                                    <MenuItem id='Chiang Mai'>Bangkok</MenuItem>
+                                    <MenuItem id='Chonburi'>Chonburi</MenuItem>
+                                    <MenuItem id='Phuket'>Phuket</MenuItem>
+                                </Select>
                             </div>
-                            <div>
+                            <div className='flex space-x-4 w-full items-center'>
                                 <div className="font-semibold">Limit Amount</div><div><CheckBox/></div>
                                 <div> <TextField id='limitAmount' type="number" name='limitAmount' className='border px-5 py-2 rounded-md' size="small"
                                 value={isLimitAmount < 0 ? 0 : isLimitAmount}onChange={handleAmountChange}></TextField></div>
                             </div>
                         </div>
-                        <button type='submit' onClick={(event)=> {
+                        <div className="flex w-full items-center justify-center"><button type='submit' onClick={(event)=> {
                             event.preventDefault(); handleCreateCampaign();}}
                             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 
-                            rounded flex items-center space-x-2 h-full'>
+                            rounded flex items-center space-x-2 h-full justify-center'>
                             {isLoading ? <CircularProgress size={24} color="inherit" /> : "Create"}
-                        </button>
+                        </button></div>
+                        
                     </div>
                 </form>
         </main>
