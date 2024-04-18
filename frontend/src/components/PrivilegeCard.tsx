@@ -1,3 +1,4 @@
+'use client'
 import Image from 'next/image';
 import { CampaignItem } from '../../interface';
 import Link from 'next/link';
@@ -21,7 +22,7 @@ export default function PrivilegeCard({campaign, session} : {campaign:CampaignIt
     };
 
     return (
-        <div className="w-[70%] mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100 border">
+        <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md m-5 flex flex-row hover:bg-gray-100 border">
             <div className="w-[20%] items-center">
                 <Image src={'/img/logo.jpg'} alt='logo image' width={100} height={100} className='object-cover rounded-l-lg'/>
             </div>

@@ -112,3 +112,19 @@ export interface dashboardItem {
   province: string,
   count: number
 }
+
+export interface CouponJSON {
+  success: boolean,
+  count: number,
+  data: CouponItem
+}
+
+export interface CouponItem {
+  _id: string,
+  user: string,
+  campaign: string,
+  code: string,
+  used: boolean,
+  createdAt: Date,
+  __v: number
+}

@@ -3,7 +3,7 @@ import updateCampaign from "@/libs/updateCampaign";
 import { ChangeEvent, useState, useEffect } from "react";
 import { Select, MenuItem, CircularProgress, TextField, Radio } from "@mui/material";
 import { CheckBox } from "@mui/icons-material";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 type RouterQuery = {
     cid: string;

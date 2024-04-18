@@ -112,3 +112,18 @@ exports.deleteCampaign = async (req, res, next) => {
         console.log(err.stack);
     }
 }
+
+exports.getCampaign = async (req, res, next) => {
+    try {
+        const campaigns = await campaign.findById(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            data: campaigns
+        });
+    } catch (err) {
+        res.status(400).json({
+            success: false
+        });
+    }
+}
