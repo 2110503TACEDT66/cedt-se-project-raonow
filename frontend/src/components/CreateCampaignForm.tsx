@@ -75,13 +75,13 @@ export default function CreateCampaignForm({session}:{session:any}) {
                 <form className='w-[80vw] mx-auto my-4 p-10 bg-white rounded-lg shadow-lg h-[100%] items-center'>
                     <div className='justify-between'>
                         <div className="text-left">
-                            <div>
-                                <div className="font-semibold">Title</div>
-                                <div> <TextField id='title' name='title' className='border px-5 py-2 rounded-md' size="small"
+                            <div className="flex justify-center">
+                                <div className="font-semibold flex-col align-center">Title</div>
+                                <div className="flex-col"> <TextField id='title' name='title' className='border px-5 py-2 rounded-md' size="small"
                                 onChange={(e)=>{setTitle(e.target.value)}}></TextField></div>
                             </div>
-                            <div>
-                                <div className="font-semibold text-justify" style={{ verticalAlign: 'top'  }}>Description</div>
+                            <div className="flex">
+                                <div className="font-semibold text-justify flex-col" style={{ verticalAlign: 'top'  }}>Description</div>
                                 <div> <TextField id='description' name='description' className='border px-5 py-2 rounded-md' multiline={true} rows={3}
                                 onChange={(e)=>{setDesc(e.target.value)}}></TextField></div>
                             </div>

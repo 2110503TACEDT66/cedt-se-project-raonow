@@ -22,8 +22,8 @@ export default async function createCampaign() {
     }
 
     return(
-        <main className="w-[100%] flex flex-col items-center">
-            <div className="w-[100%] h-[70%]"><CreateCampaignForm session={session}/></div>
+        <main className="w-[100%] flex flex-col ">
+            <div className="w-[100%] h-[70%] items-center"><CreateCampaignForm session={session}/></div>
         </main>
     )
 }
