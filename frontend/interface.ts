@@ -28,6 +28,7 @@ export interface BookingItem {
   duration: number;
   bookDate: Date;
   createdAt: Date;
+  pointEarned: number | null;
   __v?: number;
 }
 
