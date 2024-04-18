@@ -105,7 +105,7 @@ exports.createBooking = async (req,res,next)=>{
         if (req.body.coupon && req.body.coupon !== '') {
             //get coupon data from body
             const couponModel = require('../models/Coupon');
-            const couponData = await couponModel.findOne({code: req.body.coupon}).populate('campaign');
+            const couponData = await couponModel.findById(req.body.coupon).populate('campaign');
             couponID = couponData._id;
 
             //check if coupon is exist

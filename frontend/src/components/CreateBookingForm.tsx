@@ -4,17 +4,19 @@ import { BookingItem } from "../../interface"
 import { Session } from "inspector";
 import { useState, useEffect } from "react";
 import getUserProfile from "@/libs/getUserProfile";
-import { Select, MenuItem, ListItemIcon, CircularProgress } from "@mui/material";
+import { TextField, Select, MenuItem, ListItemIcon, CircularProgress } from "@mui/material";
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import DateReserve from "@/components/DateReserve";
 import { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import getCoupon from "@/libs/getCoupon";
 
 
 export default function CreateBookingForm({book, session}:{book:BookingItem, session:any}) {
     const [modify, setModify] = useState(book.bookDate === null || book.duration < 1);
+    const [coupon, setCoupon] = useState<string>("" as string);
     const [isLoading, setIsLoading] = useState(false);
     const [isComplete, setIsComplete] = useState(false);
     const [bookDate, setBookDate] = useState<Dayjs | null>(book.bookDate ? dayjs(book.bookDate) : null);
@@ -26,7 +28,9 @@ export default function CreateBookingForm({book, session}:{book:BookingItem, ses
 
     const router = useRouter();
 
-    const linkUpdate = `/book/?hotel=${book.hotel._id}&type=${book.roomType}&date=${bookDate?.format('YYYY-MM-DD')}&duration=${duration}`;
+    const token = session?.user.token;
+
+    const linkUpdate = `/book/?hotel=${book.hotel._id}&type=${book.roomType}&date=${bookDate?.format('YYYY-MM-DD')}&duration=${duration}&coupon=${coupon}`;
 
     const handleCreateBooking = async () => {
         if ( !duration || !bookDate) return alert("Please select date and duration");
@@ -37,6 +41,7 @@ export default function CreateBookingForm({book, session}:{book:BookingItem, ses
                 book.hotel._id,
                 duration, 
                 book.roomType,
+                coupon,
                 session?.user.token,
                 book.user._id)
             setIsComplete(true);
@@ -46,6 +51,13 @@ export default function CreateBookingForm({book, session}:{book:BookingItem, ses
             setIsLoading(false);
         }
     };
+
+    const handleCheckCoupon = async () => {
+        const couponData = await getCoupon(token, coupon);
+        if (coupon) {
+            router.push(linkUpdate);
+        } 
+    }
 
     if (modify) return (
         <div className='rounded-3xl flex flex-col items-center space-y-4 p-4'>
@@ -123,6 +135,22 @@ export default function CreateBookingForm({book, session}:{book:BookingItem, ses
     );
 
     return (
+        <div className="w-full">
+            <div className="flex flex-row justify-between border items-center rounded-md p-4 shadow-lg mt-4 bg-white">
+            <div>Use coupon</div>
+            <div>
+            <TextField variant='standard' name='duration' id='duration' className='bg-white w-[300px] focus:outline-none focus:border-none' 
+                onChange={(event) => {setCoupon(event.target.value)}}
+                />
+            </div>
+            <div>
+            <button type='submit' onClick={handleCheckCoupon}
+                className='bg-pink-500 hover:bg-pink-700 text-white font-bold py-4 px-16 
+                rounded flex justify-center text-center w-1/3'
+            >Use</button>
+            </div>
+        </div>
+  
         <div className="flex justify-between space-x-6 mt-2 w-full text-lg">
             <button type='submit' onClick={(event)=> {
                 setModify(true);}}
@@ -135,6 +163,7 @@ export default function CreateBookingForm({book, session}:{book:BookingItem, ses
                 rounded flex justify-center text-center space-x-2 w-2/3 shadow-lg'
             >BOOK NOW
             </button>
+        </div>
         </div>
     )
 }
