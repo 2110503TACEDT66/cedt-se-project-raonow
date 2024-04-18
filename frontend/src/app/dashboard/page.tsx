@@ -14,6 +14,7 @@ import UpdateCampaignForm from "../campaign/update/page";
 
 export default async function Dashboard() {
     const session = await getServerSession(authOptions);
+    console.log(session?.user);
     if (!session) return null;
     
     const userProfile = await getUserProfile(session.user.token);

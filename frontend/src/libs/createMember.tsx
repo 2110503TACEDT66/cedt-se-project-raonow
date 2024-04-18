@@ -1,4 +1,8 @@
-// 'use server'
+'use server'
+
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
+
 export default async function createMember(
     token: string,
     user: string,
@@ -30,8 +34,7 @@ export default async function createMember(
       if (!response.ok) {
         throw new Error("Failed to fetch member");
       }
-  
-      return await response.json();
+
     } catch (error: any) {
       throw new Error(`Failed to fetch member: ${error.message}`);
     }
