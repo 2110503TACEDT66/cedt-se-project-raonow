@@ -1,7 +1,7 @@
 'use client'
 
 import PrivilegeCard from "./PrivilegeCard";
-import { campaignJSON } from "../../interface";
+import { CampaignJSON } from "../../interface";
 import getCampaign from "@/libs/getCampaigns";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/[...nextauth]';
@@ -9,7 +9,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/[...nextauth]';
 export default async function RedeemCampaignCatalog() {
     const session = await getServerSession(authOptions);
     if(!session) return null;
-    const campaigns:campaignJSON = await getCampaign(session.user.token);
+    const campaigns:CampaignJSON = await getCampaign(session.user.token);
 
     return (
         <div style={{
@@ -22,7 +22,7 @@ export default async function RedeemCampaignCatalog() {
         }}>
             {
                 campaigns.data.map((item) => (
-                    <PrivilegeCard campaign={item}/>
+                    <PrivilegeCard campaign={item} session={session}/>
                 ))
             }
         </div>

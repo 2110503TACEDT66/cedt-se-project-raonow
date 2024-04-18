@@ -1,16 +1,18 @@
 import Image from 'next/image';
-import { campaignItem } from '../../interface';
+import { CampaignItem } from '../../interface';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import deleteCampaign from '@/libs/deleteCampaign';
 
-export default function PrivilegeCard({campaign} : {campaign:campaignItem}) {
+export default function PrivilegeCard({campaign, session} : {campaign:CampaignItem, session:any}) {
     const thisCampaign = campaign;
     const router = useRouter();
     const handleDeleteCampaign = async (id: string) => {
         console.log("deleting campaign")
 
         try {
-            //await deleteCampaign();
+            const token = session?.user.token ?? '';
+            await deleteCampaign(token, thisCampaign._id as string);
             console.log("delete booking success");
             router.refresh();
         } catch (error:any) {
