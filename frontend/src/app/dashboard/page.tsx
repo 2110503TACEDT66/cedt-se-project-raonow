@@ -2,7 +2,6 @@ import getUserProfile from "@/libs/getUserProfile";
 import getBookings from "@/libs/getBookings";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import Link from 'next/link';
 import MemberCard from "@/components/MemberCard";
 import getMember from "@/libs/getMember";
 //import RedeemCampaignCard from "@/components/RedeemCampaignCard";
