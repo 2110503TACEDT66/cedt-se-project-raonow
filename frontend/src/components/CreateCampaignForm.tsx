@@ -2,11 +2,9 @@
 import createCampaign from "@/libs/createCampaign";
 import { CampaignItem } from "../../interface"
 import { ChangeEvent, useState } from "react";
-import { Select, MenuItem, ListItemIcon, CircularProgress, TextField, Radio } from "@mui/material";
+import { Select, MenuItem, CircularProgress, TextField, Radio, Checkbox, SelectChangeEvent } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { CheckBox, Description } from "@mui/icons-material";
-
 
 
 export default function CreateCampaignForm({session}:{session:any}) {
@@ -23,6 +21,7 @@ export default function CreateCampaignForm({session}:{session:any}) {
 
     const [isComplete, setIsComplete] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<string>('');
 
     // console.log(session?.user.token)
     const menuClass = "px-3 py-1 space-x-2";
@@ -55,6 +54,10 @@ export default function CreateCampaignForm({session}:{session:any}) {
         const numericValue = parseFloat(inputValue);
         setLimitAmount(numericValue);
     };
+    const handleSelectChange = (event: SelectChangeEvent) => {
+        setSelectedItem(event.target.value as string);
+      };
+    
 
     if (isComplete) return (
         <div className="flex flex-col text-center font-bold text-green-600 mt-4 text-xl">
@@ -72,28 +75,30 @@ export default function CreateCampaignForm({session}:{session:any}) {
     return (
         <main className='bg-gray-100 w-full h-[82vh] flex items-center justify-center flex flex-col'>
                 <div className='text-2xl font-bold mt-[20px] flex'>Create Campaign</div>
-                <form className='w-[80vw] mx-auto my-4 p-10 bg-white rounded-lg shadow-lg h-[100%] items-center'>
-                    <div>
-                        <div className="text-left">
-                            <div className="flex justify-center">
-                                <div className="font-semibold flex-col align-center">Title</div>
-                                <div className="flex-col"> <TextField id='title' name='title' className='border px-5 py-2 rounded-md' size="small"
+                <form className='w-[60vw] mx-auto my-4 p-10 bg-white rounded-xl shadow-lg h-[100%] items-center'>
+                    <div className="items-left text-left">
+                        
+                            <div className="flex justify-center py-1">
+                                <div className="font-semibold flex-col justify-center">Title</div>
+                                <div className="flex flex-col w-[446px]"> <TextField id='title' name='title' className='border px-5 py-1 rounded-md' size="small" fullWidth multiline={true} rows={2}
                                 onChange={(e)=>{setTitle(e.target.value)}}></TextField></div>
                             </div>
-                            <div className="flex">
-                                <div className="font-semibold text-justify flex-col" style={{ verticalAlign: 'top'  }}>Description</div>
-                                <div> <TextField id='description' name='description' className='border px-5 py-2 rounded-md' multiline={true} rows={3}
-                                onChange={(e)=>{setDesc(e.target.value)}}></TextField></div>
+                            <div className="flex justify-center py-1">
+                                <div className="font-semibold flex-col" style={{ verticalAlign: 'top'  }}>Description</div>
+                                <div className="flex flex-col w-[500px]"> <TextField id='description' name='description' className='border px-5 py-2 rounded-md' multiline={true} rows={4}
+                                fullWidth onChange={(e)=>{setDesc(e.target.value)}}></TextField></div>
                             </div>
-                            <div>
-                                <div className="font-semibold">Point</div>
-                                <div> <TextField id='point' name='point' type="number" className='border px-5 py-2 rounded-md' size="small"
+                            <div className="flex justify-center py-1">
+                                <div className="font-semibold flex-col">Point</div>
+                                <div className="flex flex-col w-[446px] "> <TextField id='point' name='point' type="number" className='border px-5 py-2 rounded-md' size="small" fullWidth
                                 value={point < 0 ? 0 : point} onChange={handlePointChange}> </TextField></div>
                                 </div>
-                            <div>
-                                <div className="font-semibold">Limited Area</div><div><CheckBox/></div>
-                                <div>
-                                    <Select className='border rounded-md'>
+                            <div className="flex justify-center py-1">
+                                <div className="font-semibold px-4">Limited Area</div>
+                                <div className="font-semibold px-4"><Checkbox/></div>
+                                <div className="flex flex-col w-[400px]">
+                                    <Select className='border rounded-md' fullWidth size="small"
+                                    value={selectedItem} onChange={handleSelectChange} defaultValue={selectedItem}>
                                         <MenuItem id='Bangkok'>Chiang Mai</MenuItem>
                                         <MenuItem id='Chiang Mai'>Bangkok</MenuItem>
                                         <MenuItem id='Chonburi'>Chonburi</MenuItem>
@@ -101,18 +106,23 @@ export default function CreateCampaignForm({session}:{session:any}) {
                                     </Select>
                                 </div>
                             </div>
-                            <div>
-                                <div className="font-semibold">Limit Amount</div><div><CheckBox/></div>
-                                <div> <TextField id='limitAmount' type="number" name='limitAmount' className='border px-5 py-2 rounded-md' size="small"
-                                value={isLimitAmount < 0 ? 0 : isLimitAmount}onChange={handleAmountChange}></TextField></div>
+                            <div className="flex justify-center py-1">
+                                <div className="font-semibold px-[30px]">Limit Amount</div>
+                                <div className="font-semibold"><Checkbox/></div>
+                                <div className="flex flex-col w-[435px]">
+                                    <TextField id='limitAmount' type="number" name='limitAmount' className='border px-5 py-2 rounded-md' size="small"
+                                    value={isLimitAmount < 0 ? 0 : isLimitAmount}onChange={handleAmountChange} fullWidth></TextField>
+                                </div>
                             </div>
-                        </div>
+                        
+                        <div className="flex flex-col items-center mt-[80px]">
                         <button type='submit' onClick={(event)=> {
                             event.preventDefault(); handleCreateCampaign();}}
                             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 
                             rounded flex items-center space-x-2 h-full'>
                             {isLoading ? <CircularProgress size={24} color="inherit" /> : "Create"}
                         </button>
+                        </div>
                     </div>
                 </form>
         </main>
