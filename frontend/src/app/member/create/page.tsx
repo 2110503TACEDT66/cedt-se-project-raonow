@@ -5,7 +5,7 @@ import CreateMemberForm from "@/components/CreateMemberForm";
 export default async function CreateMember() {
     const session = await getServerSession(authOptions);
     return (
-        <main className="w-[100%] flex flex-col items-center space-y-4">
+        <main className="w-[100%] h-screen flex flex-col items-center space-y-4">
             <CreateMemberForm session={session}/>
         </main>
     )

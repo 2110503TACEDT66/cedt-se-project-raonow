@@ -58,7 +58,7 @@ export default function CreateCampaignForm({session}:{session:any}) {
 
     if (isComplete) return (
         <div className="flex flex-col text-center font-bold text-green-600 mt-4 text-xl">
-            
+            <Link href='/dashboard'>Return to dashboard</Link>
         </div>
     );
 
@@ -90,7 +90,7 @@ export default function CreateCampaignForm({session}:{session:any}) {
                                 <div> <TextField id='point' name='point' type="number" className='border px-5 py-2 rounded-md' size="small"
                                 value={point < 0 ? 0 : point} onChange={handlePointChange}> </TextField></div>
                                 </div>
-                            <div className='flex space-x-4 w-full items-center'>
+                            {/* <div className='flex space-x-4 w-full items-center'>
                                 <div className="font-semibold">Limited Area</div>
                                 <div><CheckBox/></div>
                                 <Select className='border rounded-md w-1/3'>
@@ -99,12 +99,12 @@ export default function CreateCampaignForm({session}:{session:any}) {
                                     <MenuItem id='Chonburi'>Chonburi</MenuItem>
                                     <MenuItem id='Phuket'>Phuket</MenuItem>
                                 </Select>
-                            </div>
-                            <div className='flex space-x-4 w-full items-center'>
+                            </div> */}
+                            {/* <div className='flex space-x-4 w-full items-center'>
                                 <div className="font-semibold">Limit Amount</div><div><CheckBox/></div>
                                 <div> <TextField id='limitAmount' type="number" name='limitAmount' className='border px-5 py-2 rounded-md' size="small"
                                 value={isLimitAmount < 0 ? 0 : isLimitAmount}onChange={handleAmountChange}></TextField></div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="flex w-full items-center justify-center"><button type='submit' onClick={(event)=> {
                             event.preventDefault(); handleCreateCampaign();}}
