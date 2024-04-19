@@ -6,12 +6,16 @@ import createCoupon from '@/libs/createCoupon';
 export default function RedeemPointCard({token, campaignItem} : {token:string, campaignItem:CampaignItem}){
 
     const redeem = async () => {
-        const couponData = await createCoupon(token, campaignItem._id||'') as any;
-        const coupon = await couponData.data;
-        alert('Coupon created');
+        try {
+            const couponData = await createCoupon(token, campaignItem._id||'') as any;
+            const coupon = await couponData.data;
+            alert('Coupon created');
+        } catch {
+            alert('Failed to create coupon');
+        }
     }
 
-    return( <div className="w-full px-10 bg-gray-200 rounded-t-lg flex flex-row py-5 ">
+    return( <div className="w-[70%] px-10 bg-gray-200 rounded-t-lg flex flex-row py-5 ">
     <div className="relative ">
     <div style={{ width: 120, height: 120, float:'left'}}>       
           <Image
