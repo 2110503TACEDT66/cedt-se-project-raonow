@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default async function EditHotelButton() {
     const session = await getServerSession(authOptions)
-    const role = session?.user.role
+    const role = session?.user.user.role;
 
     if(role == "admin") return <div></div>
     else return (
