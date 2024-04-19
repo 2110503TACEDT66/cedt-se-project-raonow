@@ -4,6 +4,7 @@ export default async function createBooking(
     hotelId: string,
     duration: number,
     roomType: string,
+    coupon: string,
     token: string,
     user: string,
     
@@ -23,6 +24,7 @@ export default async function createBooking(
               duration: duration,
               hotel: hotelId,
               roomType: roomType,
+              coupon: coupon,
               user:user
             }
           ),

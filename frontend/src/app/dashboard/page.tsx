@@ -95,6 +95,11 @@ export default async function Dashboard() {
                     ))
                 }
             </div>
+            <Link href={`/campaign/create`}
+                            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 
+                            rounded flex items-center space-x-2 h-full justify-center'>Create
+                           
+            </Link>
         </main>
     );
 }

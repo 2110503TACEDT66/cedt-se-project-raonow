@@ -4,7 +4,7 @@ import { TextField } from "@mui/material"
 
 export default function UpdateHotelForm() {
     const {data:session} = useSession()
-    const role = session?.user.role
+    const role = session?.user.user.role
 
     return(
         role == "admin"?
