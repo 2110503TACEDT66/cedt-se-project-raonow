@@ -10,26 +10,24 @@ import Link from "next/link";
 export default function CreateCampaignForm({session}:{session:any}) {
 
     const [isLimitArea, setLimitArea] = useState(null);
-    const [isLimitAmount, setLimitAmount] = useState<number>(0);
+    const [isLimitAmount, setLimitAmount] = useState<number>(Infinity);
     const [duration, sedivuration] = useState<number>(30);
     const [onePerUse, setOnePerUse] = useState(true);
     const [title, setTitle] = useState<string>('')
     const [desc, setDesc] = useState<string>('')
     const [discType, sediviscType] = useState<string>('percentage')
     const [discAmount, sediviscAmount] = useState<number>(10)
-    const [point, setPoint] = useState<number>(0);
+    const [point, setPoint] = useState<number>(100);
 
     const [isComplete, setIsComplete] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectedItem, setSelectedItem] = useState<string>('');
 
-    // console.log(session?.user.token)
-    const menuClass = "px-3 py-1 space-x-2";
-    const router = useRouter();
+    //for disable Textfield if Checkbox is unchecked
+    const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+    const [isTextFieldEnabled, setIsTextFieldEnabled] = useState(false);
 
+    //handleFunction
     const handleCreateCampaign = async () => {
         if ( title === '' || desc === '' || point < 0 ) return alert("Please fill out all required fields.");
-        setIsLoading(true);
         try {
             await createCampaign(
                 session?.user.token,
@@ -38,12 +36,9 @@ export default function CreateCampaignForm({session}:{session:any}) {
             )
             setIsComplete(true);
         } catch (error:any) {
-            alert("Create booking failed");
-        } finally {
-            setIsLoading(false);
+            alert("Create campaign failed");
         }
     };
-
     const handlePointChange = (event: ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
         const numericValue = parseFloat(inputValue);
@@ -54,21 +49,16 @@ export default function CreateCampaignForm({session}:{session:any}) {
         const numericValue = parseFloat(inputValue);
         setLimitAmount(numericValue);
     };
-    const handleSelectChange = (event: SelectChangeEvent) => {
-        setSelectedItem(event.target.value as string);
-      };
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const checked = event.target.checked;
+        setIsCheckboxChecked(checked);
+        setIsTextFieldEnabled(checked); // Enable/disable TextField based on checkbox state
+        };
     
 
     if (isComplete) return (
         <div className="flex flex-col text-center font-bold text-green-600 mt-4 text-xl">
             <Link href='/dashboard'>Return to dashboard</Link>
-        </div>
-    );
-
-    if (isLoading) 
-        return (
-        <div className="flex justify-center items-center w-full mt-4">
-            <CircularProgress size={30} color="inherit" />
         </div>
     );
 
@@ -95,8 +85,8 @@ export default function CreateCampaignForm({session}:{session:any}) {
                                     value={point < 0 ? 0 : point} onChange={handlePointChange}> </TextField></td>
                                 </tr>
                                 <tr className='flex border-solid'>
-                                    <td className="font-semibold w-[28%] my-2 border-solid">Limited Area</td>
-                                    <td className="border-solid w-1/6"><Checkbox/></td>
+                                    <td className="font-semibold w-[37%] my-2 border-solid">Limited Area</td>
+                                    <td className="border-solid w-1/6" id='isLimitedArea'><Checkbox/></td>
                                     <td className="border-solid w-2/4">
                                         <Select className='rounded-md w-[92%] mx-4 my-1' size="small">
                                             <MenuItem id='Bangkok'>Chiang Mai</MenuItem>
@@ -107,11 +97,20 @@ export default function CreateCampaignForm({session}:{session:any}) {
                                     </td>
                                 </tr>
                                 <tr className='flex border-solid\'>
-                                    <td className="font-semibold w-[28%] my-2 border-solid">Limit Amount</td>
-                                    <td className="border-solid w-1/6"><Checkbox/></td>
+                                    <td className="font-semibold w-[37%] my-2 border-solid">Limit Amount</td>
+                                    <td className="border-solid w-1/6">
+                                        <Checkbox id='isLimitAmount'
+                                        checked={isCheckboxChecked}
+                                        onChange={handleCheckboxChange}/>
+                                    </td>
                                     <td className="border-solid w-2/4">
-                                    <TextField id='limitAmount' type="number" name='limitAmount' className='mx-4 my-1 w-[92%] rounded-md' size="small"
-                                    value={isLimitAmount < 0 ? 0 : isLimitAmount}onChange={handleAmountChange}></TextField>
+                                    <TextField 
+                                    id='limitAmount' name='limitAmount'  type="number"
+                                    className={`mx-4 my-1 w-[92%] rounded-md 
+                                    ${ !isCheckboxChecked ? 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed' : '' }`} size="small"
+                                    value={isTextFieldEnabled ? (isLimitAmount < 0 ? 0 : isLimitAmount) : ''}
+                                    onChange={handleAmountChange}
+                                    disabled={!isTextFieldEnabled}></TextField>
                                     </td>
                                 </tr>
                             </tbody>
@@ -120,11 +119,11 @@ export default function CreateCampaignForm({session}:{session:any}) {
                             event.preventDefault(); handleCreateCampaign();}}
                             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 
                             rounded flex items-center space-x-2 h-full justify-center'>
-                            {isLoading ? <CircularProgress size={24} color="inherit" /> : "Create"}
+                            Create
                         </button></div>
-                        
                     </div>
                 </form>
         </main>
     );
+    
 }
