@@ -12,6 +12,8 @@ const cors = require('cors');
 //Load env vars
 dotenv.config({ path: './config/config.env' });
 
+process.env.TZ = 'Asia/Bangkok';
+
 //Connect to database
 connectDB();
 

@@ -15,6 +15,11 @@ const BookingSchema = new mongoose.Schema({
         ref: 'Hotel',
         required: true
     },
+    review: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Review',
+        default: null
+    },
     roomType: {
         type: String,
         required: true
