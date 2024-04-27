@@ -29,6 +29,7 @@ export interface BookingItem {
   bookDate: Date;
   createdAt: Date;
   pointEarned?: number | null;
+  review?: string;
   __v?: number;
 }
 
@@ -46,7 +47,9 @@ export interface User {
     email: string,
     telephoneNumber: string,
     role: string,
-    member: string | null  
+    member: string | null,
+    hotelier?: string | null,
+    reviewFilter?: ReviewFilter
   }
 }
 
@@ -128,3 +131,79 @@ export interface CouponItem {
   createdAt: Date,
   __v: number
 }
+
+export interface ReviewCreating {
+  user: string, 
+  booking: string, 
+  hotel: string, 
+  rating: number, 
+  title: string, 
+  review: string, 
+  attitude: string,
+  travelerType: string
+}
+
+export interface ReviewItem {
+  _id: string,
+  user: {name: string, location: string},
+  booking: {bookDate: Date, roomType: string, duration: string},
+  hotel: string,
+  rating: number,
+  title: string,
+  review: string,
+  travelerType: string,
+  attitude: string,
+  readStatus: string,
+  createdAt: Date
+}
+
+export interface ReviewList {
+  success: boolean,
+  count: number,
+  data: ReviewItem[]
+}
+
+export type ReviewStar = Record<number, string>;
+export const reviewStar:ReviewStar = {
+  0:    'Terrible',
+  0.5:  'Bad',
+  1:    'Poor',
+  1.5:  'Fair',
+  2:    'Exceptional',
+  2.5:  'Average',
+  3:    'Good',
+  3.5:  'Very Good',
+  4:    'Excellent',
+  4.5:  'Wonderful',
+  5:    'Perfect',
+}
+
+export type queryReview = {
+  date?: string;
+  rating?: number[];
+  travelerType?: string;
+  sort?: string;
+  id?: string,
+  header?: number,
+  lastCheck?: string
+}
+
+export type ReviewBasicJSON = {
+  success: boolean,
+  count: number,
+  data: ReviewBasicData
+}
+
+export type ReviewBasicData = {
+  averageRating: number,
+  totalReviewCount: number
+}
+
+export type ReviewFilter = {
+  date: string,
+  rating: number[],
+  travelerType: string,
+  sort: string
+}
+
+export const travelerType = ['solo', 'couple', 'family', 'group', 'business'];

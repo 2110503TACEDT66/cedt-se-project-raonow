@@ -26,7 +26,7 @@ exports.getBookings= async (req,res,next)=>{
             query = Booking.find().populate({
                 path: 'user',
                 select: 'name telephoneNumber email'
-            }).populate('hotel');
+            }).populate('hotel').sort({createdAt: -1});
         }
     }
 
