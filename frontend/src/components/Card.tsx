@@ -7,8 +7,8 @@ import { styled } from '@mui/system';
 import calculateRoomPrice from '@/libs/calculateRoomPrice';
 import dayjs from 'dayjs';
 
-export default function Card({hotelName, book, user, cardType}:
-    {hotelName:HotelItem, book?:BookingItem, user?:UserBookingInfo, cardType?:string}) {
+export default function Card({hotelName, book, user, cardType, isReview}:
+    {hotelName:HotelItem, book?:BookingItem, user?:UserBookingInfo, cardType?:string, isReview?:boolean}) {
         const hotel = hotelName
         const img = hotel.images
         const pic = img?.main
