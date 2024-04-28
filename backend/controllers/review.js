@@ -169,3 +169,24 @@ exports.getReviews= async (req,res,next) => {
         res.status(400).json({success: false});
     }  
 };
+
+exports.createReview = async (req, res, next) => {
+    try {
+        console.log(req.body);
+        const existedReview = await Review.findOne({booking: req.body.review.booking});
+        if (existedReview && req.user.role !== 'admin') {
+            return res.status(401).json({success: false, message: 'You have already reviewed this hotel'});
+        }
+        const review = await Review.create(req.body.review);
+        const booking = await Booking.findByIdAndUpdate(req.body.review.booking, {review: review._id}, {new: true});
+        res.status(201).json({
+            success: true,
+            data: review
+        });
+    } catch(err) {
+        res.status(400).json({
+            success: false
+        });
+        console.log(err.stack)
+    }
+}
