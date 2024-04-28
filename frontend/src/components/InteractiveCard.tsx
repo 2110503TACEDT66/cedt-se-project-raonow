@@ -37,6 +37,15 @@ export default function InteractiveCard({children, cardType}:{children:React.Rea
         )
     }
 
+    if (cardType === 'showSingleBooking') {
+        return(
+            <div className="w-[100%] h-[250px] shadow-lg rounded-lg bg-white
+            flex flex-row">
+                {children}
+            </div>
+        )
+    }
+
     return(
         <div className="w-[70%] h-[240px] shadow-lg rounded-lg bg-white
         flex flex-row mx-[15%]"
