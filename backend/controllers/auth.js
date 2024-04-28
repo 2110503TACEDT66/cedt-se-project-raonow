@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const mongoose = require('mongoose');
 
 //@desc     Register user
 //@route    POST /api/v1/auth/register
@@ -109,4 +110,16 @@ exports.getAllUser = async(req,res,next)=>{
     } catch(err) {
         res.status(400).json({success: false});
     }
+}
+
+exports.updateReviewFilter = async (req, res, next) => {
+	try {
+		const user = await User.findByIdAndUpdate(mongoose.Types.ObjectId.createFromHexString(req.params.id), 
+            {reviewFilter: req.body.reviewFilter}, {new: true});
+        console.log(user);
+        res.status(200).json({success: true, data: user});
+	} catch (err) {
+		res.status(400).json({success: false});
+		console.log(err.stack);
+	}
 }
