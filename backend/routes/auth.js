@@ -77,14 +77,48 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/User'
+*             type: object
+*             required:
+*               - name
+*               - telephoneNumber
+*               - email
+*               - password
+*             properties:
+*               name:
+*                 type: string
+*               telephoneNumber:
+*                 type: string
+*               email:
+*                 type: string
+*               password:
+*                 type: string
+*               role:
+*                 type: string
+*             example:
+*               name: Name
+*               telephoneNumber: "0987654321"
+*               email: any@gmail.com
+*               password: "123456"
+*               role: "admin"
 *     responses:
 *       201:
 *         description: Create user successfully
 *         content:
 *           application/json:
 *             schema:
-*               $ref: '#/components/schemas/User'
+*               type: object
+*               properties:
+*                 success:
+*                   type: boolean
+*                   example: true
+*                 token:
+*                   type: string
+*                   example: "<JWT_TOKEN>"
+*                 user:
+*                   type: object
+*                   $ref: '#/components/schemas/User'
+*       400:
+*         description: Bad request
 */
 
 //Login
@@ -119,9 +153,15 @@ const {protect, authorize} = require('../middleware/auth');
 *             schema:
 *               type: object
 *               properties:
+*                 success:
+*                   type: boolean
+*                   example: true
 *                 token:
 *                   type: string
 *                   example: "<JWT_TOKEN>"
+*                 user:
+*                   type: object
+*                   $ref: '#/components/schemas/User'
 *       400:
 *         description: Bad request
 *       401:
@@ -143,7 +183,16 @@ const {protect, authorize} = require('../middleware/auth');
 *         content:
 *           application/json:
 *             schema:
-*               $ref: '#/components/schemas/User'
+*               type: object
+*               properties:
+*                 success:
+*                   type: boolean
+*                   example: true
+*                 user:
+*                   type: object
+*                   $ref: '#/components/schemas/User'
+*       401:
+*         description: Unauthorized
 */
 
 router.post('/register', register);

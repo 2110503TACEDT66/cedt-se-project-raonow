@@ -57,7 +57,7 @@ const {protect, authorize} = require('../middleware/auth');
 //Get All
 /**
 * @swagger
-* /bookings:
+* /booking:
 *   get:
 *     summary: Returns the list of all the bookings
 *     tags: [Booking]
@@ -77,7 +77,7 @@ const {protect, authorize} = require('../middleware/auth');
 //Get One
 /**
 * @swagger
-* /bookings/{id}:
+* /booking/{id}:
 *   get:
 *     summary: Returns a booking
 *     tags: [Booking]
@@ -103,7 +103,7 @@ const {protect, authorize} = require('../middleware/auth');
 //Get Dashboard
 /**
 * @swagger
-* /bookings/dashboard:
+* /booking/dashboard:
 *   get:
 *     summary: Returns dashboard
 *     tags: [Booking]
@@ -117,7 +117,7 @@ const {protect, authorize} = require('../middleware/auth');
 //Create
 /**
 * @swagger
-* /bookings:
+* /booking:
 *   post:
 *     summary: Create a booking
 *     tags: [Booking]
@@ -143,7 +143,7 @@ const {protect, authorize} = require('../middleware/auth');
 //Update
 /**
 * @swagger
-* /bookings/{id}:
+* /booking/{id}:
 *   put:
 *     summary: Update a booking
 *     tags: [Booking]
@@ -175,7 +175,7 @@ const {protect, authorize} = require('../middleware/auth');
 //Delete
 /**
 * @swagger
-* /bookings/{id}:
+* /booking/{id}:
 *   delete:
 *     summary: Delete a booking
 *     tags: [Booking]
