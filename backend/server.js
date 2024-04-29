@@ -63,6 +63,7 @@ const swaggerOptions = {
                 url: 'https://cedt-se-project-raonow.vercel.app/api/v1'
             }
         ],
+        customCss: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
     },
     apis: ['./routes/*.js']
 };
