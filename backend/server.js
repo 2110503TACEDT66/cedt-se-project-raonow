@@ -59,7 +59,8 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: process.env.HOST + ':' + process.env.PORT + '/api/v1'
+                // url: process.env.HOST + ':' + process.env.PORT + '/api/v1'
+                url: 'https://cedt-se-project-raonow.vercel.app/api/v1'
             }
         ],
     },
