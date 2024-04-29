@@ -17,6 +17,14 @@ export default async function getReviews({
     if (query.id) {
       queryList.push(`id=${query.id}`);
     } else {
+      if (!query) {
+        query = {
+          'date': 'All time',
+          'rating': [] as number[],
+          'travelerType': 'Any',
+          'sort': 'Most revelant',
+        };
+      }
       if (query.date && query.date != "All time") {
         let date = new Date();
         switch (query.date) {

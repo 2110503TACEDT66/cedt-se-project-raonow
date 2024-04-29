@@ -12,9 +12,8 @@ export default function Card({hotelName, book, user, cardType, isReview}:
     {hotelName:HotelItem, book?:BookingItem, user?:UserBookingInfo, cardType?:string, isReview?:boolean}) {
         const hotel = hotelName
         const img = hotel.images
-        const pic = 'https://drive.google.com/uc?id=1IJ7dEhuc3jwdh3PfvEVgH8_sX_kAJu-5'
-         // https://drive.google.com/file/d/1IJ7dEhuc3jwdh3PfvEVgH8_sX_kAJu-5/view?usp=drive_link
-        // const pic = img?.main
+        // const pic = 'https://drive.google.com/uc?id=1IJ7dEhuc3jwdh3PfvEVgH8_sX_kAJu-5'
+        const pic = img?.main
         let showPrice = hotel.basePrice
         // console.log(img)
         // console.log("pic: " + pic)

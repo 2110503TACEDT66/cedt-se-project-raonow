@@ -18,6 +18,7 @@ export default async function HotelDetail({
   const session = await getServerSession(authOptions);
   const hotel = await getHotel(params.hid);
   const reviewHeader = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: { header: 1 } });
+  const reviews = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: {} });
   const hotelItem = hotel.data;
   const img = hotelItem.images;
   const pic = img?.main;
@@ -101,7 +102,7 @@ export default async function HotelDetail({
       </div>
 
       <div className="container mx-auto py-4 w-2/3 space-y-4">
-        <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader}/>
+        <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader} reviews={reviews}/>
       </div>
     </main>
   );
