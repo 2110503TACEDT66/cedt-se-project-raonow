@@ -152,25 +152,26 @@ exports.getReviewHeader = async (req, res, next) => {
           _id: "$_id.hotel",
           averageRating: { $avg: "$averageRating" },
           totalReviewCount: { $sum: "$totalReviewCount" },
-          ratingsPerTravelerType: {
-            $push: {
-              name: "$_id.travelerType",
-              travelerType: "$_id.travelerType",
-              count: "$totalReviewCount",
-            },
-          },
+          // ratingsPerTravelerType: {
+          //   $push: {
+          //     name: "$_id.travelerType",
+          //     travelerType: "$_id.travelerType",
+          //     count: "$totalReviewCount",
+          //   },
+          // },
         },
       },
       {
         $project: {
           _id: 0,
-          hotel: "$_id",
+          // hotel: "$_id",
           averageRating: 1,
           totalReviewCount: 1,
-          ratingsPerTravelerType: 1,
+          // ratingsPerTravelerType: 1,
         },
       },
     ]);
+    results[0].hotel = req.params.hotelId;
     console.log("header: " + results);
     res.status(200).json({
       success: true,
