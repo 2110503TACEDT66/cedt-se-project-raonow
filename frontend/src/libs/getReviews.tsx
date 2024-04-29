@@ -1,6 +1,7 @@
 // 'use client'
 'use server'
 import { queryReview } from "../../interface";
+import getBackendURL from "./getBackendURL";
 
 export default async function getReviews({
   token,
@@ -50,13 +51,7 @@ export default async function getReviews({
       }
     }
     const queryString = queryList.join("&");
-    let backendUrl = "";
-    try {
-      backendUrl = window.location.origin;
-      if (window.location.origin === "http://localhost:3000") backendUrl = "http://localhost:5000";
-    } catch {
-      backendUrl = "http://localhost:5000"
-    }
+    let backendUrl = getBackendURL();
     
     const url = `${backendUrl}/api/v1/hotel/${hotel}/reviews?${queryString}`;
     console.log(url);
