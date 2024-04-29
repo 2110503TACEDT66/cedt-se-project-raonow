@@ -19,7 +19,7 @@ export default async function HotelierPage() {
   if (!hotel) return null;
   // console.log(session);
   const reviewHeader = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: { header: 1 } }); 
-
+  const reviews = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: {} });
   return (
     <main className="w-screen min-h-screen">
 			<div className="container mx-auto py-4 w-2/3 space-y-4">
@@ -29,7 +29,7 @@ export default async function HotelierPage() {
         <h3 className="text-sm text-gray-700">
           Hotel ID: {hotel.data._id}
         </h3>
-        <ReviewPanel session={session} hotel={hotel.data} viewType="hotelier" header={reviewHeader}/>
+        <ReviewPanel session={session} hotel={hotel.data} viewType="hotelier" header={reviewHeader} reviews={reviews}/>
       </div>
       <HotelierNotification token={session?.user.token} hotel={hotel.data._id}/>
 		</main>
