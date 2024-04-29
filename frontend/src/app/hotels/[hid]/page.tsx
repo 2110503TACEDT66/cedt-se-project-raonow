@@ -100,10 +100,15 @@ export default async function HotelDetail({
           />
         ) : null}
       </div>
-
-      <div className="container mx-auto py-4 w-2/3 space-y-4">
-        <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader} reviews={reviews}/>
-      </div>
+      {
+        session ? 
+        <div className="container mx-auto py-4 w-2/3 space-y-4">
+          <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader} reviews={reviews}/>
+        </div> :
+        <div className="container mx-auto py-4 w-2/3 space-y-4 justify-center">
+          Sign-in to view reviews
+        </div>
+      }
     </main>
   );
 }
