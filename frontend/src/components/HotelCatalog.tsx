@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { HotelItem } from "../../interface";
 
 export default async function HotelCatalog({hotelJson, date, duration}
-    :{hotelJson:Promise<HotelJSON>, date:string, duration:number}) {
+    :{hotelJson:Promise<HotelJSON>|undefined, date:string, duration:number}) {
     const hotel = await hotelJson
+    if (!hotel) return null
     //console.log(hotel)
 
     return(

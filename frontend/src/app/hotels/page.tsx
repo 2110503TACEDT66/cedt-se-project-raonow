@@ -1,5 +1,6 @@
 'use client'
 import { Suspense } from "react"
+import { useState, useEffect } from "react"
 import HotelCatalog from "@/components/HotelCatalog"
 import { HotelJSON } from "../../../interface"
 import getHotels from "@/libs/getHotels"
@@ -13,8 +14,11 @@ type Props = {
 
 export default function HotelsPage(props: Props) {
     const searchParams = props.searchParams;
-    const hotels = getHotels(searchParams)
-    
+    const [hotels, setHotels] = useState<Promise<HotelJSON>>();
+    useEffect(() => {
+        setHotels(getHotels(searchParams));
+    }, [searchParams]);
+
     return(
         <main className="w-screen min-h-screen">
             <AddBookDate searchParams={searchParams}/>
