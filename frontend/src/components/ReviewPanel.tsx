@@ -9,8 +9,8 @@ import { HotelItem, ReviewBasicJSON, ReviewFilter, ReviewList as ReviewListType,
 import { FormControl, InputLabel, Select, MenuItem, OutlinedInput, FormControlLabel, Checkbox, Snackbar, Alert } from "@mui/material";
 
 //filter reviews by date, rating, and traveler type
-export default function ReviewPanel({ session, hotel, viewType, header }: 
-  { session: Session|null, hotel: HotelItem, viewType: string, header: ReviewBasicJSON }) {
+export default function ReviewPanel({ session, hotel, viewType, header, reviews }: 
+  { session: Session|null, hotel: HotelItem, viewType: string, header: ReviewBasicJSON, reviews: ReviewListInterface }) {
   let travelerType = baseTravelerType;
   const [values, setValues] = useState<ReviewFilter>({
     'date': 'All time',
@@ -19,7 +19,7 @@ export default function ReviewPanel({ session, hotel, viewType, header }:
     'sort': 'Most revelant',
   });
   const isHotelier = viewType === 'hotelier';
-  const [reviews, setReviews] = useState<ReviewListType>();
+  // const [reviews, setReviews] = useState<ReviewListType>();
   const [loading, setLoading] = useState(false);
   const [isSaveFilterSuccess, setIsSaveFilterSuccess] = useState(false);
   const [successPopUpText, setSuccessPopUpText] = useState('');
@@ -99,42 +99,6 @@ export default function ReviewPanel({ session, hotel, viewType, header }:
     if (reason === 'clickaway') { return; }
     setIsSaveFilterSuccess(false);
   }
-  
-  useEffect(() => {
-    const fetchReviews = async () => {  
-      const reviews = await getReviews({ token: session?.user.token, hotel: hotel._id, query: values });
-      setReviews(reviews);
-    };
-    
-    setValues({
-      'date': 'All time',
-      'rating': [] as number[],
-      'travelerType': 'Any',
-      'sort': 'Most revelant',
-    });
-    fetchReviews();
-  }, []);
-
-  useEffect(() => {
-    if (loading) return;
-
-    const fetchReviews = async () => {
-      const reviews = await getReviews({ token: session?.user.token, hotel: hotel._id, query: values });
-      setReviews(reviews);
-    };
-  
-    setUseEffectCount(useEffectCount + 1);
-    console.log('useEffectCount: ' + useEffectCount);
-    const timer = setTimeout(() => {
-      if (!hasRun.current) {
-        fetchReviews();
-        hasRun.current = true;
-      }
-    }, 1000);
-  
-    // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
-    // return () => clearTimeout(timer);
-  }, [values]);
 
   return (
     <div className="space-y-4">
@@ -214,7 +178,7 @@ export default function ReviewPanel({ session, hotel, viewType, header }:
       {
         !loading ?
         <Suspense fallback={<div>Loading...</div>}>
-          <ReviewList reviews={reviews as any as ReviewListInterface} filter={values}/>
+          <ReviewList reviews={reviews} filter={values}/>
         </Suspense> : <div>Loading...</div>
       }
       <Snackbar open={isSaveFilterSuccess} autoHideDuration={6000} onClose={handlePopUpSuccess}>

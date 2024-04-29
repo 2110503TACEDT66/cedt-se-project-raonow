@@ -5,6 +5,7 @@ export default async function ReviewPanelBasic({reviewBasicInput}: {reviewBasicI
 	console.log(JSON.stringify(reviewInputJSON));
 	if (!reviewInputJSON) return <div>Loading...</div>;
 	const reviewBasic = reviewInputJSON.data;
+	if (!reviewBasic) return <div>Not available</div>;
   	return (
     <div className="flex flex-col space-y-1 text-lg ">
 		<div>Rating from users</div>

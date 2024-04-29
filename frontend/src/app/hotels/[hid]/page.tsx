@@ -1,12 +1,15 @@
 import Image from "next/image";
 import getHotel from "@/libs/getHotel";
 import RoomCard from "@/components/RoomCard";
-import EditHotelButton from "@/components/EditHotelButton";
 import StarRating from "@/components/StarRating";
 import ReviewPanel from "@/components/ReviewPanel";
 import getReviews from "@/libs/getReviews";
-import { getServerSession } from "next-auth";
+import { Session, getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
+import { PlaceOutlined, PhoneOutlined } from "@mui/icons-material";
+import { Suspense } from "react";
+import ReviewPanelBasic from "@/components/ReviewPanelBasic";
+import { ReviewBasicJSON } from "../../../../interface";
 
 export default async function HotelDetail({
   params,
@@ -17,10 +20,23 @@ export default async function HotelDetail({
 }) {
   const session = await getServerSession(authOptions);
   const hotel = await getHotel(params.hid);
+  const reviews = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: {} });
   const reviewHeader = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: { header: 1 } });
   const hotelItem = hotel.data;
-  const img = hotelItem.images;
-  const pic = img?.main;
+
+  let roomCount = 1;
+  switch (hotelItem.starRating) {
+    case 3:
+      roomCount = 3;
+      break;
+    case 4:
+      roomCount = 3;
+      break;
+    case 5:
+      roomCount = 4;
+      break;
+  }
+
   const bookingInformation = {
     hotel: hotelItem._id,
     date: searchParams.date,
@@ -28,30 +44,66 @@ export default async function HotelDetail({
   };
 
   return (
-    <main className="items-center w-screen">
-      <div className="w-[90%] mx-[5%]">
-        <Image
-          src={pic}
-          alt="Image"
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="rounded-md w-[100%]"
-        />
-        <div className="py-2 text-4xl font-semibold mx-2">
-          {hotelItem.name}
-          <StarRating name="rating" value={hotelItem.starRating} readOnly />
+    <main className="container mx-auto py-4 w-3/4 space-y-4">
+      <div className="flex flex-col space-y-4 border-b-2">
+        <div className="flex flex-row space-x-4">
+          <div className="h-[405px] w-2/3">
+          <Image
+            src={hotelItem.images?.main || "/img/cover.jpg"}
+            alt="Hotel Main Image"
+            width={720}
+            height={405}
+            blurDataURL="/img/cover.jpg"
+            
+            sizes="75vw"
+            className="object-cover rounded-md w-full h-full"
+          />
+          </div>
+          <div className="flex flex-col space-y-4 w-1/3 h-[405px]">
+            <div className="h-[48%]">
+              <Image
+                src={hotelItem.images?.des1 || "/img/Standard.jpg"}
+                alt="Hotel description 1"
+                width={480}
+                height={196}
+                sizes="50vw"
+                className="object-cover rounded-md w-full h-full"
+              />
+            </div>
+            <div className="h-[48%]">
+              <Image
+                src={hotelItem.images?.des2 || "/img/Deluxe.JPG"}
+                alt="Hotel description 2"
+                width={480}
+                height={196}
+                sizes="50vw"
+                className="object-cover rounded-md w-full h-full"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="my-4 flex flex-row text-4xl font-semibold space-x-3 items-center">
+          <p>{hotelItem.name}</p>
+          <StarRating name="rating" value={hotelItem.starRating} readOnly className="items-center"/>
         </div>
 
-        <div className="flex flexrow my-3 mx-2">
-          <div className="text-md flex flex-col text-left">
-            <div>{hotelItem.address}</div>
-            {hotelItem.telephoneNumber}
+        <div className="flex flex-col my-4 pb-4 space-y-1 text-md text-left">
+          <div className="flex flex-row space-x-2 items-center">
+            <PlaceOutlined style={{width: '20px', height: '20px'}}/>
+            <p>{hotelItem.address}</p>
+          </div>
+          <div className="flex flex-row space-x-2 items-center">
+            <PhoneOutlined style={{width: '20px', height: '20px'}}/>
+            <p>{hotelItem.telephoneNumber}</p>
           </div>
         </div>
       </div>
 
-      <div className="py-6 mx-[10%] w-[90%]">
+      <h2 className="text-2xl font-semibold">
+          Select your room - {roomCount} room types available
+      </h2>
+
+      <div className="mx-[10%] pb-4 w-[90%] space-y-4">
         {hotelItem.starRating < 4 ? (
           <RoomCard
             roomType="Standard"
@@ -62,7 +114,7 @@ export default async function HotelDetail({
           />
         ) : null}
         {hotelItem.starRating > 2 ? (
-          <div>
+          <div className="space-y-4">
             <RoomCard
               roomType="Superior"
               bed={"1 Double Bed"}
@@ -73,7 +125,7 @@ export default async function HotelDetail({
             <RoomCard
               roomType="Deluxe"
               bed={"1 Double Bed"}
-              imgSrc={"/img/Deluxe.jpg"}
+              imgSrc={"/img/Deluxe.JPG"}
               price={hotelItem.basePrice}
               book={bookingInformation}
             />
@@ -99,10 +151,38 @@ export default async function HotelDetail({
           />
         ) : null}
       </div>
-
-      <div className="container mx-auto py-4 w-2/3 space-y-4">
-        <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader}/>
-      </div>
+      {
+        session ? 
+        <div className="container mx-auto py-4 space-y-4 border-t-2">
+          <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader} reviews={reviews}/>
+        </div> :
+        <div className="container mx-auto py-4 w-2/3 space-y-4 justify-center border-t-2">
+          Sign-in to view reviews
+        </div>
+      }
+    {/* <ReviewHeaderListWithSuspense session={session} hotel={hotelItem._id}/> */}
     </main>
   );
 }
+
+// async function ReviewHeaderLoader({session, hotel}:{session: Session|null, hotel: string}) {
+//   const header = await getReviews({ token: session?.user.token, hotel: hotel, query: { header: 1 } });
+//   return <ReviewPanelBasic reviewBasicInput={header} />;
+// }
+
+// export function ReviewHeaderListWithSuspense({
+//   session, hotel, reviewHeader,
+// }: {
+//   session: Session|null, hotel: string,
+//   reviewHeader?: ReviewBasicJSON;
+// }) {
+//   if (reviewHeader) {
+//     return <ReviewPanelBasic reviewBasicInput={reviewHeader} />;
+//   }
+
+//   return (
+//     <Suspense fallback={<div>Loading 2 ... </div>}>
+//       <ReviewHeaderLoader session={session} hotel={hotel}/>
+//     </Suspense>
+//   );
+// }
