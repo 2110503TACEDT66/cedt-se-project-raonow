@@ -65,7 +65,7 @@ const {protect, authorize} = require('../middleware/auth');
 *         content:
 *           application/json:
 *             schema:
-*               $ref: '#/components/schemas/User'
+*               $ref: '#/components/schemas/Member'
 */
 
 //Get Members
