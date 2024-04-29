@@ -1,5 +1,5 @@
 const express = require('express');
-const {getReviews, createReview} = require('../controllers/review');
+const {getReviews, createReview, getReviewHeader} = require('../controllers/review');
 
 const router = express.Router({mergeParams:true});
 const {protect, authorize} = require('../middleware/auth');
@@ -47,6 +47,26 @@ const {protect, authorize} = require('../middleware/auth');
 *         createdAt:
 *           type: string
 *           format: date
+*/
+
+/**
+* @swagger
+* components:
+*   schemas:
+*     ReviewHeader:
+*       type: object
+*       required:
+*         - hotel
+*         - averageRating
+*         - totalReviewCount
+*       properties:
+*         hotel:
+*           type: string
+*           format: uuid
+*         averageRating:
+*           type: number
+*         totalReviewCount:
+*           type: number
 */
 
 //Tag
@@ -102,11 +122,6 @@ const {protect, authorize} = require('../middleware/auth');
 *           type: string
 *         description: id
 *       - in: query
-*         name: header
-*         schema:
-*           type: integer
-*         description: header
-*       - in: query
 *         name: lastCheck
 *         schema:
 *           type: string
@@ -120,6 +135,31 @@ const {protect, authorize} = require('../middleware/auth');
 *               type: array
 *               items:
 *                 $ref: '#/components/schemas/Review'
+*/
+
+//Get header
+/**
+* @swagger
+* /hotel/{hotel_id}/reviews/header:
+*   get:
+*     summary: Returns the basic information of the review
+*     tags: [Review]
+*     parameters:
+*       - in: path
+*         name: hotel_id
+*         schema:
+*           type: string
+*           default: 65e43ae76ab856889745475e
+*         required: true
+*     responses:
+*       200:
+*         description: The basic information of the review
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: '#/components/schemas/ReviewHeader'
 */
 
 //Create
@@ -189,5 +229,7 @@ const {protect, authorize} = require('../middleware/auth');
 router.route('/')
     .get(protect, getReviews)
     .post(protect, createReview);
+
+router.route('/header').get(getReviewHeader);
 
 module.exports=router;
