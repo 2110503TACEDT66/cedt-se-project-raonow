@@ -6,16 +6,17 @@ import ImageComponent from './ImageComponent';
 import { styled } from '@mui/system';
 import calculateRoomPrice from '@/libs/calculateRoomPrice';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 
-export default function Card({hotelName, book, user, cardType}:
-    {hotelName:HotelItem, book?:BookingItem, user?:UserBookingInfo, cardType?:string}) {
+export default function Card({hotelName, book, user, cardType, isReview}:
+    {hotelName:HotelItem, book?:BookingItem, user?:UserBookingInfo, cardType?:string, isReview?:boolean}) {
         const hotel = hotelName
         const img = hotel.images
         const pic = img?.main
         let showPrice = hotel.basePrice
-        console.log(img)
-        console.log("pic: " + pic)
-        console.log(book?.roomType);
+        // console.log(img)
+        // console.log("pic: " + pic)
+        // console.log(book?.roomType);
 
     const roomTypeImages: { [key: string]: string } = {
         'Standard': '/img/Standard.jpg',
@@ -24,9 +25,12 @@ export default function Card({hotelName, book, user, cardType}:
         'Suite': '/img/Suite.jpg',
         'Executive Suite': '/img/ExSuite.jpg'
     };
+    const isShowBooking = cardType === 'showBooking' || cardType === 'showSingleBooking';
+    const showReviewButton = (dayjs(book?.createdAt) <= dayjs().add(1, 'day') && !isReview && !book?.review);
+    const showViewReviewButton = book?.review && !isReview;
 
         //"/img/Standard.jpg"
-    if (cardType === 'createBooking' || cardType === 'showBooking') {
+    if (cardType === 'createBooking' || isShowBooking) {
         return (
             <InteractiveCard cardType={cardType}>
             <div className="h-full w-[30%] relative">
@@ -56,7 +60,7 @@ export default function Card({hotelName, book, user, cardType}:
                             </div>
                         </div>
                         {
-                        cardType === 'showBooking' ? (
+                        cardType === 'showBooking' || cardType === 'showSingleBooking' ? (
                             <div className='text-base font-bold'>Guest: {book?.user.name}</div>
                         ) : (
                             <p className='text-gray-600'>Hotel phone: {hotel.telephoneNumber}</p>
@@ -78,22 +82,37 @@ export default function Card({hotelName, book, user, cardType}:
                     </div>
                 </div>
                 {
-                    cardType === 'showBooking' && (
+                    isShowBooking && (
                         <div className="">
                             <div className=" flex flex-row justify-between items-center">
                                 <div>
                                     <div className='text-gray-500'>Booking ID: {book?._id}</div>
                                     <div className="text-gray-400">Click to view or edit booking information</div>
                                 </div>
-                                
+                                <div>
                                 {
                                     book?.pointEarned != null ?
                                         <div className='items-center text-green-500'>
                                             {book?.pointEarned} point earned
                                         </div>: null
                                 }
+                                {
+                                    showReviewButton ?
+                                    <div className='flex'><Link href={`/booking/${book?._id}/review`}><button type='submit'
+                                        className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-16 
+                                        rounded flex justify-center text-center w-2/3 shadow-lg'
+                                    >Review
+                                    </button></Link></div>: null
+                                }
+                                {
+                                    showViewReviewButton ?
+                                    <div className='flex'><Link href={`/booking/${book?._id}/review`}><button type='submit'
+                                        className='border-2 hover:bg-slate-200 py-1 px-16 rounded flex justify-center text-center'
+                                    >View Review
+                                    </button></Link></div>: null
+                                }
+                                </div>
                             </div>
-                            
                         </div>
                     )
                 }

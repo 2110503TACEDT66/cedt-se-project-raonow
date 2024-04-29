@@ -37,8 +37,8 @@ export default async function BookingPage({params}: {params: {id: string}}) {
           <p>Check-in: {checkinDate} - Check-out: {checkoutDate}</p>
       </header> */}
       <main className="container mx-auto px-4 py-4 w-2/3 space-y-4">
-            <h2 className="text-xl font-medium mb-2">Welcome, {booking.user.name}!</h2>
-            <BookingHotelCard hotel={hotel} book={booking} cardType="showBooking"/>
+            <h1 className="text-2xl font-bold my-4">Welcome, {booking.user.name}!</h1>
+            <BookingHotelCard hotel={hotel} book={booking} cardType="showSingleBooking"/>
 
             <div className="border rounded-md flex flex-row justify-between py-4 px-6 shadow-lg bg-white">
                 <div className='w-[60%]'>
