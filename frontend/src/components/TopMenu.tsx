@@ -21,6 +21,10 @@ export default async function TopMenu () {
                 {
                     session? <>
                         {
+                            session.user.user.role === 'hotelier' || session.user.user.role === 'admin' ?
+                            <TopMenuItem title="Hotelier" pageRef="/hotelier"/> : null
+                        }
+                        {
                             session?.user?.user?.member ?
                             <TopMenuItem title="Member" pageRef="/member"/> :
                             <TopMenuItem title="Member" pageRef="/member/create"/>

@@ -4,12 +4,14 @@ const {getHotels, getHotel, createHotel, updateHotel, deleteHotel}
 
 //Include other resource routers
 const bookingRouter = require('./booking'); 
+const reviewRouter = require('./review');
 
 const router = express.Router();
 const {protect, authorize} = require('../middleware/auth');
 
 //Re-route into other resource routers
 router.use('/:hotelId/booking/', bookingRouter);
+router.use('/:hotelId/reviews', reviewRouter);
 
 router.route('/')
     .get(getHotels)

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const reviewFilterSchema = require('./ReviewFilter');
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -29,12 +30,26 @@ const UserSchema = new mongoose.Schema({
     },
   role: {
       type: String,
-      enum: ['user', 'admin'],
+      enum: ['user', 'admin', 'hotelier'],
       default: 'user'
   },
   member: {
     type: mongoose.Schema.ObjectId,
     ref: 'Member',
+    default: null,
+  },
+  travelerType: {
+    type: String,
+    enum: ['solo', 'couple', 'family', 'group', 'business'],
+    default: 'solo'
+  },
+  hotelier: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Hotel',
+    default: null,
+  },
+  reviewFilter: {
+    type: reviewFilterSchema,
     default: null,
   },
     resetPasswordToken: String,
