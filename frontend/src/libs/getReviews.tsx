@@ -1,6 +1,7 @@
 // 'use client'
 'use server'
 import { queryReview } from "../../interface";
+import getBackendURL from "./getBackendURL";
 
 export default async function getReviews({
   token,
@@ -16,6 +17,14 @@ export default async function getReviews({
     if (query.id) {
       queryList.push(`id=${query.id}`);
     } else {
+      if (!query) {
+        query = {
+          'date': 'All time',
+          'rating': [] as number[],
+          'travelerType': 'Any',
+          'sort': 'Most revelant',
+        };
+      }
       if (query.date && query.date != "All time") {
         let date = new Date();
         switch (query.date) {
@@ -50,13 +59,7 @@ export default async function getReviews({
       }
     }
     const queryString = queryList.join("&");
-    let backendUrl = "";
-    try {
-      backendUrl = window.location.origin;
-      if (window.location.origin === "http://localhost:3000") backendUrl = "http://localhost:5000";
-    } catch {
-      backendUrl = "http://localhost:5000"
-    }
+    let backendUrl = getBackendURL();
     
     const url = `${backendUrl}/api/v1/hotel/${hotel}/reviews?${queryString}`;
     console.log(url);

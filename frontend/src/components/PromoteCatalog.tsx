@@ -11,8 +11,7 @@ export default function PromoteCatalog({name, image, link}: {name: string, image
                     src={image}
                     alt="Product Picture"
                     layout="fill"
-                    objectFit="cover"
-                    className="rounded-lg"
+                    className="rounded-lg object-cover hover:border-2 hover:border-gray-100 transition duration-500 ease-in-out"
                 /></Link>
                 </div>
             </div>

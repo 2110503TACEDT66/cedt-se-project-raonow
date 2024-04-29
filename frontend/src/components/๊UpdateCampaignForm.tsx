@@ -76,7 +76,7 @@ export function UpdateCampaignForm2({ campaignItem, cid, session }:
     };
 
     return (
-        <main className='bg-gray-100 w-full h-[82vh] flex items-center justify-center flex flex-col'>
+        <main className='bg-gray-100 w-full h-[82vh] flex items-center justify-center flex-col'>
                 <div className='text-2xl font-bold mt-[20px] flex'>Update Campaign</div>
                 <form className='w-[80vw] mx-auto my-4 p-10 bg-white rounded-lg shadow-lg h-[100%] items-center'>
                     <div>
