@@ -17,46 +17,6 @@ exports.getReviews= async (req,res,next) => {
             res.status(400).json({success: false});
         }
     }
-    if (req.query.header) {
-        try {
-					const results = await Review.aggregate([
-						{ $match: { hotel: mongoose.Types.ObjectId.createFromHexString(req.params.hotelId) } },
-            { $group: {
-                _id: "$hotel",
-                averageRating: { $avg: "$rating" },
-                totalReviewCount: { $sum: 1 }
-            }},
-						{ $group: {
-							_id: "$_id.hotel",
-							averageRating: { $avg: "$averageRating" },
-							totalReviewCount: { $sum: "$totalReviewCount" },
-							ratingsPerTravelerType: {
-								$push: {
-									name: "$_id.travelerType",
-									travelerType: "$_id.travelerType",
-									count: "$totalReviewCount"
-								}
-							}
-						}},
-						{ $project: {
-								_id: 0,
-								hotel: "$_id",
-								averageRating: 1,
-								totalReviewCount: 1,
-								ratingsPerTravelerType: 1
-						}}
-					]);
-					console.log('header: ' + results);
-					res.status(200).json({
-							success: true, 
-							data: results[0]
-					});
-        } catch (err) {
-						console.log(err.stack);
-            res.status(400).json({success: false});
-        }
-				return;
-    }
     if (req.query.lastCheck) {
         try {
             const lastCheckDate = new Date(req.query.lastCheck);
@@ -168,6 +128,58 @@ exports.getReviews= async (req,res,next) => {
     } catch(err) {
         res.status(400).json({success: false});
     }  
+};
+
+exports.getReviewHeader = async (req, res, next) => {
+  try {
+    const results = await Review.aggregate([
+      {
+        $match: {
+          hotel: mongoose.Types.ObjectId.createFromHexString(
+            req.params.hotelId
+          ),
+        },
+      },
+      {
+        $group: {
+          _id: "$hotel",
+          averageRating: { $avg: "$rating" },
+          totalReviewCount: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.hotel",
+          averageRating: { $avg: "$averageRating" },
+          totalReviewCount: { $sum: "$totalReviewCount" },
+          ratingsPerTravelerType: {
+            $push: {
+              name: "$_id.travelerType",
+              travelerType: "$_id.travelerType",
+              count: "$totalReviewCount",
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          hotel: "$_id",
+          averageRating: 1,
+          totalReviewCount: 1,
+          ratingsPerTravelerType: 1,
+        },
+      },
+    ]);
+    console.log("header: " + results);
+    res.status(200).json({
+      success: true,
+      data: results[0],
+    });
+  } catch (err) {
+    console.log(err.stack);
+    res.status(400).json({ success: false });
+  }
 };
 
 exports.createReview = async (req, res, next) => {
