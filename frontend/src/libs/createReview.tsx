@@ -1,12 +1,13 @@
+'use server'
 import { ReviewCreating } from "../../interface";
 
 export default async function createReview({token, review}: 
     {token: string, review: ReviewCreating}) {
     let backendUrl = window.location.origin;
-    if (window.location.origin === "http://localhost:3000") backendUrl = "http://localhost:5000";
+    // if (window.location.origin === "http://localhost:3000") backendUrl = "http://localhost:5000";
     try {
       const response = await fetch(
-        `${backendUrl}/api/v1/hotel/${review.hotel}/reviews`,
+        `${process.env.BACKEND_URL}/api/v1/hotel/${review.hotel}/reviews`,
         {
           method: "POST",
           headers: {
