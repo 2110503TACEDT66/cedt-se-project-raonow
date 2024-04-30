@@ -1,15 +1,13 @@
+'use server'
 import Image from "next/image";
 import getHotel from "@/libs/getHotel";
 import RoomCard from "@/components/RoomCard";
 import StarRating from "@/components/StarRating";
-import ReviewPanel from "@/components/ReviewPanel";
-import getReviews from "@/libs/getReviews";
+import getReviewHeader from "@/libs/getReviewHeader";
 import { Session, getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/[...nextauth]";
 import { PlaceOutlined, PhoneOutlined } from "@mui/icons-material";
-import { Suspense } from "react";
-import ReviewPanelBasic from "@/components/ReviewPanelBasic";
-import { ReviewBasicJSON } from "../../../../interface";
+import ReviewHolder from "@/components/ReviewHolder";
 
 export default async function HotelDetail({
   params,
@@ -20,8 +18,8 @@ export default async function HotelDetail({
 }) {
   const session = await getServerSession(authOptions);
   const hotel = await getHotel(params.hid);
-  const reviews = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: {} });
-  const reviewHeader = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: { header: 1 } });
+  if (!hotel) return null;
+  const reviewHeader = await getReviewHeader({ hotel: params.hid});
   const hotelItem = hotel.data;
 
   let roomCount = 1;
@@ -44,7 +42,8 @@ export default async function HotelDetail({
   };
 
   return (
-    <main className="container mx-auto py-4 w-3/4 space-y-4">
+    <main className="w-screen">
+    <div className="container mx-auto py-4 w-3/4 space-y-4">
       <div className="flex flex-col space-y-4 border-b-2">
         <div className="flex flex-row space-x-4">
           <div className="h-[405px] w-2/3">
@@ -154,35 +153,14 @@ export default async function HotelDetail({
       {
         session ? 
         <div className="container mx-auto py-4 space-y-4 border-t-2">
-          <ReviewPanel session={session} hotel={hotelItem} viewType="user" header={reviewHeader} reviews={reviews}/>
+          <ReviewHolder session={session} hotel={hotelItem} header={reviewHeader}/>
         </div> :
-        <div className="container mx-auto py-4 w-2/3 space-y-4 justify-center border-t-2">
+        <div className="container mx-auto py-4 space-y-4 justify-center border-t-2">
           Sign-in to view reviews
         </div>
       }
     {/* <ReviewHeaderListWithSuspense session={session} hotel={hotelItem._id}/> */}
+    </div>
     </main>
   );
 }
-
-// async function ReviewHeaderLoader({session, hotel}:{session: Session|null, hotel: string}) {
-//   const header = await getReviews({ token: session?.user.token, hotel: hotel, query: { header: 1 } });
-//   return <ReviewPanelBasic reviewBasicInput={header} />;
-// }
-
-// export function ReviewHeaderListWithSuspense({
-//   session, hotel, reviewHeader,
-// }: {
-//   session: Session|null, hotel: string,
-//   reviewHeader?: ReviewBasicJSON;
-// }) {
-//   if (reviewHeader) {
-//     return <ReviewPanelBasic reviewBasicInput={reviewHeader} />;
-//   }
-
-//   return (
-//     <Suspense fallback={<div>Loading 2 ... </div>}>
-//       <ReviewHeaderLoader session={session} hotel={hotel}/>
-//     </Suspense>
-//   );
-// }

@@ -17,13 +17,13 @@ export default function ReviewPanel({ session, hotel, viewType, header, reviews 
     'rating': [] as number[],
     'travelerType': 'Any',
     'sort': 'Most revelant',
+    'createdAt': new Date(),
   });
   const isHotelier = viewType === 'hotelier';
   // const [reviews, setReviews] = useState<ReviewListType>();
   const [loading, setLoading] = useState(false);
   const [isSaveFilterSuccess, setIsSaveFilterSuccess] = useState(false);
   const [successPopUpText, setSuccessPopUpText] = useState('');
-  const [useEffectCount, setUseEffectCount] = useState(0);
   const hasRun = useRef(false);
 
   const dateFilterSelect = [
@@ -81,15 +81,23 @@ export default function ReviewPanel({ session, hotel, viewType, header, reviews 
     const response = await updateReviewFilter({session: session, reviewFilter: values});
     if (response.success) {
       setSuccessPopUpText('Review filter saved successfully!');
+      localStorage.setItem('reviewFilter', JSON.stringify(values));
       setIsSaveFilterSuccess(true);
     }
   };
 
   const handleLoadReviewFilter = async () => {
-    if (session?.user?.user?.reviewFilter) {
-      setSuccessPopUpText('Review filteer loaded successfully!');
-      setValues(await session?.user?.user?.reviewFilter);
-    } else {
+    setSuccessPopUpText('Review filter loaded successfully!');
+    const sessionFilter = await session?.user?.user?.reviewFilter;
+    const localFilter = JSON.parse(localStorage.getItem('reviewFilter')||"") as unknown as ReviewFilter;
+    
+    try {
+      if (sessionFilter.createdAt >= localFilter.createdAt) {
+        setValues(sessionFilter);
+      } else {
+        setValues(localFilter);
+      }
+    } catch (error) {
       setSuccessPopUpText('No review filter');
     }
     setIsSaveFilterSuccess(true);
@@ -101,16 +109,14 @@ export default function ReviewPanel({ session, hotel, viewType, header, reviews 
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 min-h-[80vh]">
       <div className="text-2xl font-semibold">
         Review of {hotel.name} from real guests
       </div>  
 
       <div className="flex flex-row ">
         <div className="flex flex-col w-1/3 border-r-2 pr-4 py-4 justify-between">
-          <Suspense fallback={<div>Loading...</div>}>
-            <ReviewPanelBasic reviewBasicInput={header} />
-          </Suspense>
+          <ReviewPanelBasic reviewBasicInput={header} />
           <div className="flex flex-row space-x-2">
             <button className="w-1/2 bg-gray-100 hover:bg-gray-200 rounded-md py-1  justify-end"
             onClick={handleUpdateReviewFilter}>

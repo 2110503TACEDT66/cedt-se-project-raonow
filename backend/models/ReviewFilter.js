@@ -19,6 +19,10 @@ const reviewFilterSchema = new mongoose.Schema({
       type: [Number],
       default: []
     },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    },
   });
 
 module.exports = reviewFilterSchema;

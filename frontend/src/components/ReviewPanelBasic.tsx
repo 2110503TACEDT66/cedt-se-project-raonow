@@ -1,6 +1,6 @@
 import { ReviewBasicJSON } from "../../interface";
 
-export default async function ReviewPanelBasic({reviewBasicInput}: {reviewBasicInput: ReviewBasicJSON}) {
+export default function ReviewPanelBasic({reviewBasicInput}: {reviewBasicInput: ReviewBasicJSON}) {
 	const reviewInputJSON = reviewBasicInput;
 	console.log(JSON.stringify(reviewInputJSON));
 	if (!reviewInputJSON) return <div>Loading...</div>;

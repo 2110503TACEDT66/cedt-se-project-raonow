@@ -203,7 +203,8 @@ export type ReviewFilter = {
   date: string,
   rating: number[],
   travelerType: string,
-  sort: string
+  sort: string,
+  createdAt: Date
 }
 
 export const travelerType = ['solo', 'couple', 'family', 'group', 'business'];
