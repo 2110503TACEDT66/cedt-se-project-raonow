@@ -3,7 +3,7 @@ import { ReviewCreating } from "../../interface";
 
 export default async function createReview({token, review}: 
     {token: string, review: ReviewCreating}) {
-    let backendUrl = window.location.origin;
+    // let backendUrl = window.location.origin;
     // if (window.location.origin === "http://localhost:3000") backendUrl = "http://localhost:5000";
     try {
       const response = await fetch(
