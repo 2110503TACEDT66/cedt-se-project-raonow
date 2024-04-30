@@ -13,8 +13,8 @@ RUN npm install
 # Copy the rest of the frontend source code
 COPY . .
 
-ENV NEXTAUTH_URL='http://127.0.0.1:3000'
-ENV BACKEND_URL='http://127.0.0.1:5000'
+ENV NEXTAUTH_URL='http://frontend:3000'
+ENV BACKEND_URL='http://backend:5000'
 ENV NEXTAUTH_SECRET='Ey7nTKnggBc0bRN8WUjyShw2qzOZ6KW4fUyqcKBePxY='
 
 # Build the Next.js app
