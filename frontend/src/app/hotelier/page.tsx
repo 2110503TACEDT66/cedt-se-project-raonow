@@ -4,6 +4,7 @@ import { authOptions } from "../api/auth/[...nextauth]/[...nextauth]";
 import getReviews from "@/libs/getReviews";
 import ReviewPanel from "@/components/ReviewPanel";
 import HotelierNotification from "@/components/HotelierNotification";
+import getReviewHeader from "@/libs/getReviewHeader";
 
 export default async function HotelierPage() {
   const session = await getServerSession(authOptions)
@@ -18,7 +19,7 @@ export default async function HotelierPage() {
   const hotel = await getHotel(hotelID);
   if (!hotel) return null;
   // console.log(session);
-  const reviewHeader = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: { header: 1 } }); 
+  const reviewHeader = await getReviewHeader({ hotel: hotel.data._id }) 
   const reviews = await getReviews({ token: session?.user.token, hotel: hotel.data._id, query: {} });
   return (
     <main className="w-screen min-h-screen">
