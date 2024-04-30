@@ -1,15 +1,20 @@
 # FROM...
 FROM node:21-alpine
 
-# Create app directory
-ADD . /app
+# Set working directory
+WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-RUN npm install 
+# Install dependencies
+RUN npm install
 
-# Bundle app source
-CMD [ "node", "/app/server.js" ]
+# Copy the rest of the backend source code
+COPY . .
+
+# Expose port 5000
+EXPOSE 5000
+
+# Command to run the Express.js server
+CMD ["node", "server.js"]

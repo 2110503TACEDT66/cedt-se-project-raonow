@@ -1,15 +1,23 @@
 # FROM...
 FROM node:21-alpine
 
-# Create app directory
-ADD . /app
+# Set working directory
+WORKDIR /app
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
+# Install dependencies
 RUN npm install
 
-# Bundle app source
-CMD ["npm", "run"]
+# Copy the rest of the frontend source code
+COPY . .
+
+# Build the Next.js app
+RUN npm run build
+
+# Expose port 3000
+EXPOSE 3000
+
+# Command to run the Next.js app
+CMD ["npm", "start"]
