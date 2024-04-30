@@ -117,18 +117,34 @@ const {protect, authorize} = require('../middleware/auth');
 //Create
 /**
 * @swagger
-* /booking:
+* /hotel/{hotel_id}/booking:
 *   post:
 *     summary: Create a booking
 *     tags: [Booking]
 *     security:
 *       - BearerAuth: []
+*     parameters:
+*       - in: path
+*         name: hotel_id
+*         schema:
+*           type: string
 *     requestBody:
 *       required: true
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Booking'
+*             type: object
+*             properties:
+*               bookDate:
+*                 type: string
+*                 format: date
+*                 example: 2024-05-13
+*               roomType:
+*                 type: string
+*                 example: Suite
+*               duration:
+*                 type: integer
+*                 example: 2
 *     responses:
 *       200:
 *         description: Created booking successfully
@@ -160,7 +176,18 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Booking'
+*             type: object
+*             properties:
+*               bookDate:
+*                 type: string
+*                 format: date
+*                 example: 2024-05-13
+*               roomType:
+*                 type: string
+*                 example: Suite
+*               duration:
+*                 type: integer
+*                 example: 2
 *     responses:
 *       200:
 *         description: Updated booking successfully
