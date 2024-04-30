@@ -1,4 +1,3 @@
-// 'use client'
 'use server'
 import { queryReview } from "../../interface";
 import getBackendURL from "./getBackendURL";
@@ -61,7 +60,7 @@ export default async function getReviews({
     const queryString = queryList.join("&");
     let backendUrl = getBackendURL();
     
-    const url = `${backendUrl}/api/v1/hotel/${hotel}/reviews?${queryString}`;
+    const url = `${process.env.BACKEND_URL}/api/v1/hotel/${hotel}/reviews?${queryString}`;
     console.log(url);
     let headers = {};
     if (token) {

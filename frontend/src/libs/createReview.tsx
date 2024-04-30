@@ -1,3 +1,4 @@
+'use server'
 import { ReviewCreating } from "../../interface";
 
 export default async function createReview({token, review}: 
