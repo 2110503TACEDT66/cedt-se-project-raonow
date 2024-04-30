@@ -131,6 +131,7 @@ exports.getReviews= async (req,res,next) => {
 };
 
 exports.getReviewHeader = async (req, res, next) => {
+  console.log(req.params.hotelId);
   try {
     const results = await Review.aggregate([
       {
@@ -171,7 +172,9 @@ exports.getReviewHeader = async (req, res, next) => {
         },
       },
     ]);
-    results[0].hotel = req.params.hotelId;
+    if (results.length > 0) {
+        results[0].hotel = req.params.hotelId;
+    }
     console.log("header: " + results);
     res.status(200).json({
       success: true,

@@ -59,17 +59,16 @@ const swaggerOptions = {
         },
         servers: [
             {
-                // url: process.env.HOST + ':' + process.env.PORT + '/api/v1'
-                url: 'https://cedt-se-project-raonow.vercel.app/api/v1'
+                url: process.env.HOST + ':' + process.env.PORT + '/api/v1'
+                // url: 'https://cedt-se-project-raonow.vercel.app/api/v1'
             }
         ],
-        customCss: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
     },
     apis: ['./routes/*.js']
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api/v1/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 const hotel = require('./routes/hotel');
 const booking = require('./routes/booking');
