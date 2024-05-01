@@ -120,9 +120,29 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Coupon'
+*             type: object
+*             required:
+*               - code
+*               - campaign
+*               - member
+*               - expiryDate
+*             properties:
+*               code:
+*                 type: string
+*                 format: uuid
+*                 example: SECRETCODE
+*               campaign:
+*                 type: string
+*                 format: uuid
+*               member:
+*                 type: string
+*                 format: uuid
+*                 example: 662131613229c0b85ee4adc0
+*               expiryDate:
+*                 type: string
+*                 format: date
 *     responses:
-*       200:
+*       201:
 *         description: Created coupon successfully
 *         content:
 *           application/json:

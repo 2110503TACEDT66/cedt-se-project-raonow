@@ -42,11 +42,7 @@ const {protect, authorize} = require('../middleware/auth');
 *           type: string
 *         attitude:
 *           type: string
-*         readStatus:
-*           type: string
-*         createdAt:
-*           type: string
-*           format: date
+*           example: neutral
 */
 
 /**
