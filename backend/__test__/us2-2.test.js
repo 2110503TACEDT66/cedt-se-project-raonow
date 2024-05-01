@@ -29,7 +29,7 @@ const mockReq = {
       role: 'user'
   }
 };
-describe("createReview", () => {
+describe("createReview successfully", () => {
     it("should create a review", async () => {
         // Mock request body and necessary data
         
@@ -103,7 +103,7 @@ describe("createReview", () => {
     });
 
     describe("Invalid Input Data", () => {
-      it("should return a 400 status code for missing required fields", async () => {
+      it("should return false (rating > 5)", async () => {
           // Missing required field 'booking'
           const mockReq = {
               body: {
@@ -136,5 +136,4 @@ describe("createReview", () => {
           expect(validateStarRating(mockReq.body)).toBe(false); 
       });
   });
-  
 });
