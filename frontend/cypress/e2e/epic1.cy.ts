@@ -2,15 +2,19 @@ describe('member system', () => {
   it('should be able to visit page', () => {
     cy.visit('http://localhost:3000')
   })
-  it('should be able to register and sign in', ()=>{
+  it('should be able to register', ()=>{
     cy.visit('http://localhost:3000/register')
-    cy.intercept('POST','/user').as('new-user')
-    cy.wait('@new-user').should('have.property', 'response.statusCode', 201)
-    cy.get('@new-user').its('request.body').should('deep.equal', JSON.stringify({
-      name: 'cypress',
-      email: 'cypress@user.com',
-      telephoneNumber: '0951245967'
-    })
-    )
+    //Arrange
+    const name = 'cypress'
+    const email = 'cypress@user.com'
+    const telephoneNumber = '0951245967'
+    //Act
+    cy.get('#name').type(name) 
+    cy.get('#email').type(email)
+    cy.get('#password').type('111111111')
+    cy.get('#telephoneNumber').type(telephoneNumber)
+    cy.get('button[type="submit"]').click()
+    //
+    cy.contains('User created successfully').should('be.visible')
   })
 })
