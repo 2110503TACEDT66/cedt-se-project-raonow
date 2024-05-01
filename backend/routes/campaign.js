@@ -51,6 +51,38 @@ const {protect, authorize} = require('../middleware/auth');
 *           format: date
 *         duration:
 *           type: integer
+*     InputCampaign:
+*       type: object
+*       required:
+*         - title
+*         - description
+*         - point
+*         - onePerUser
+*         - discountType
+*         - discountAmount
+*         - totalAmount
+*         - amountLeft
+*         - duration
+*       properties:
+*         title:
+*           type: string
+*         description:
+*           type: string
+*         point:
+*           type: integer
+*         onePerUser:
+*           type: boolean
+*         discountType:
+*           type: string
+*           example: percentage
+*         discountAmount:
+*           type: integer
+*         totalAmount:
+*           type: integer
+*         amountLeft:
+*           type: integer
+*         duration:
+*           type: integer
 */
 
 //Tag
@@ -120,9 +152,9 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Campaign'
+*             $ref: '#/components/schemas/InputCampaign'
 *     responses:
-*       200:
+*       201:
 *         description: Created campaign successfully
 *         content:
 *           application/json:
@@ -152,7 +184,7 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Campaign'
+*             $ref: '#/components/schemas/InputCampaign'
 *     responses:
 *       200:
 *         description: Updated campaign successfully
