@@ -53,6 +53,52 @@ const {protect, authorize} = require('../middleware/auth');
 * @swagger
 * components:
 *   schemas:
+*     CreateReview:
+*       type: object
+*       required:
+*         - review
+*       properties:
+*         review:
+*           type: object
+*           required:
+*             - user
+*             - booking
+*             - hotel
+*             - rating
+*             - title
+*             - review
+*             - travelerType
+*             - attitude
+*           properties:
+*             id:
+*               type: string
+*               format: uuid
+*             user:
+*               type: string
+*               format: uuid
+*             booking:
+*               type: string
+*               format: uuid
+*             hotel:
+*               type: string
+*               format: uuid
+*             rating:
+*               type: integer
+*               format: int32
+*             title:
+*               type: string
+*             review:
+*               type: string
+*             travelerType:
+*               type: string
+*             attitude:
+*               type: string
+*/
+
+/**
+* @swagger
+* components:
+*   schemas:
 *     ReviewHeader:
 *       type: object
 *       required:
@@ -182,7 +228,7 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Review'
+*             $ref: '#/components/schemas/CreateReview'
 *     responses:
 *       200:
 *         description: Created review successfully
