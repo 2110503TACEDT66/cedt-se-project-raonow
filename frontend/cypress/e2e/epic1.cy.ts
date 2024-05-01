@@ -17,7 +17,7 @@ describe('member system', () => {
     //
     cy.contains('User created successfully').should('be.visible')
   })
-  it('should login and make booking', ()=>{
+  it('should be able to login', ()=>{
     cy.visit('http://localhost:3000/api/auth/signin')
     const email = 'cypress@user.com'
     const password = '111111111'
