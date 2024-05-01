@@ -26,4 +26,16 @@ describe('member system', () => {
     cy.get('input[type="password"]').type(password)
     cy.get('button').click()
   })
+
+  it('admin should be able to visit hotelier page', ()=>{
+    cy.visit('http://localhost:3000/api/auth/signin')
+    const email = 'admin999@admin.com'
+    const password = 'root9999'
+    //Login
+    cy.get('input[type="text"]').type(email)
+    cy.get('input[type="password"]').type(password)
+    cy.get('button').click()
+
+    cy.visit('http://localhost:3000/hotelier')
+  })
 })
