@@ -24,6 +24,66 @@ const {protect, authorize} = require('../middleware/auth');
 *           type: string
 *           format: uuid
 *         user:
+*           type: object
+*           properties:
+*             id:
+*               type: string
+*               format: uuid
+*             name:
+*               type: string
+*         booking:
+*           type: object
+*           properties:
+*             id:
+*               type: string
+*               format: uuid
+*             bookDate:
+*               type: string
+*               format: date
+*             roomType:
+*               type: string
+*               example: Standard
+*             duration:
+*               type: integer
+*               example: 1
+*         hotel:
+*           type: object
+*           properties:
+*             id:
+*               type: string
+*               format: uuid
+*             name:
+*               type: string
+*         rating:
+*           type: number
+*         title:
+*           type: string
+*         review:
+*           type: string
+*         travelerType:
+*           type: string
+*           example: solo
+*         attitude:
+*           type: string
+*           example: neutral
+*         readStatus:
+*           type: string
+*           example: unread
+*         createdAt:
+*           type: string
+*           format: date
+*     InputReview:
+*       type: object
+*       required:
+*         - user
+*         - booking
+*         - hotel
+*         - rating
+*         - title
+*         - review
+*         - travelerType
+*       properties:
+*         user:
 *           type: string
 *           format: uuid
 *         booking:
@@ -40,13 +100,10 @@ const {protect, authorize} = require('../middleware/auth');
 *           type: string
 *         travelerType:
 *           type: string
+*           example: solo
 *         attitude:
 *           type: string
-*         readStatus:
-*           type: string
-*         createdAt:
-*           type: string
-*           format: date
+*           example: neutral
 */
 
 /**
@@ -105,17 +162,17 @@ const {protect, authorize} = require('../middleware/auth');
 *             type: number
 *             format: float
 *         explode: false
-*         description: rating
+*         description: 1-5
 *       - in: query
 *         name: travelerType
 *         schema:
 *           type: string
-*         description: ['solo', 'couple', 'family', 'group', 'business']
+*         description: "solo, couple, family, group, business"
 *       - in: query
 *         name: sort
 *         schema:
 *           type: string
-*         description: sort
+*         description: "mostRelevant, -createdAt, -rating, rating, createdAt"
 *       - in: query
 *         name: id
 *         schema:
@@ -177,27 +234,28 @@ const {protect, authorize} = require('../middleware/auth');
 *         schema:
 *           type: string
 *         required: true
+*         default: 66047bf2ea8d18035a6a5ca3
 *     requestBody:
 *       required: true
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Review'
+*             $ref: '#/components/schemas/InputReview'
 *     responses:
-*       200:
+*       201:
 *         description: Created review successfully
 *         content:
 *           application/json:
 *             schema:
 *               type: array
 *               items:
-*                 $ref: '#/components/schemas/Review'
+*                 $ref: '#/components/schemas/InputReview'
 */
 
 //Update
 /**
 * @swagger
-* /auth/users/${user_id}/reviewFilter:
+* /auth/users/{user_id}/reviewFilter:
 *   put:
 *     summary: Update a review
 *     tags: [Review]
@@ -214,7 +272,7 @@ const {protect, authorize} = require('../middleware/auth');
 *       content:
 *         application/json:
 *           schema:
-*             $ref: '#/components/schemas/Review'
+*             $ref: '#/components/schemas/InputReview'
 *     responses:
 *       200:
 *         description: Updated review successfully
@@ -223,7 +281,7 @@ const {protect, authorize} = require('../middleware/auth');
 *             schema:
 *               type: array
 *               items:
-*                 $ref: '#/components/schemas/Review'
+*                 $ref: '#/components/schemas/InputReview'
 */
 
 router.route('/')
