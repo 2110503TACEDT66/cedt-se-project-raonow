@@ -1,10 +1,10 @@
-const { createMember } = require('./controllers/member');;
-const Member = require('./models/Member');
-const User = require('./models/User');
+const { createMember } = require('../controllers/member');;
+const Member = require('../models/Member');
+const User = require('../models/User');
 
 // Mock the dependencies
-jest.mock('./models/Member');
-jest.mock('./models/User');
+jest.mock('../models/Member');
+jest.mock('../models/User');
 
 // Define mock implementations for Member.create and User.findByIdAndUpdate
 Member.create.mockResolvedValue({ _id: 'member_id' });
